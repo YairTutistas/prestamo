@@ -5,7 +5,7 @@
 @stop
     
 @section('content')
-    <h1>Profile</h1>
+    {{ $header }}
     <main>
         {{ $slot }}
     </main>
