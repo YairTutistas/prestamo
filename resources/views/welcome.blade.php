@@ -14,6 +14,14 @@
     <p>Bienvenido al panel de administración de AdminLTE.</p>
 @stop
 
+@section('footer')
+  <strong>Copyright © 2024 <i>Ñeros S.A</i>&nbsp;</strong>
+    All rights reserved.
+  <div class="float-right d-none d-sm-inline-block">
+    <b>Version</b> 0.1
+  </div>
+@stop
+
 @stack('scripts')
 <!-- Include all JS -->
 <script src="{{ asset('js/app.js') }}" defer></script>
