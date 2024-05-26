@@ -299,6 +299,7 @@ return [
             'type' => 'navbar-search',
             'text' => 'search',
             'topnav_right' => true,
+            'can' => 'Master',
         ],
         [
             'type' => 'fullscreen-widget',
@@ -372,18 +373,21 @@ return [
             'icon' => 'fas fa-fw fa-user',
             'icon_color' => 'blue',
             'url' => 'clients',
+            'can' => 'clients',
         ],
         [
             'text' => 'Payments',
             'icon' => 'fas fa-fw fa-dollar-sign',
             'icon_color' => 'yellow',
             'url' => 'payments',
+            'can' => 'payments',
         ],
         [
             'text' => 'Portafolios',
             'icon' => 'fas fa-fw fa-briefcase',
             'icon_color' => 'cyan',
             'url' => 'portafolios',
+            'can' => 'portafolios',
         ],
         [
             'text' => 'Loans',

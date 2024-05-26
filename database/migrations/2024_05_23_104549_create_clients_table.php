@@ -19,12 +19,15 @@ return new class extends Migration
     
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
+            $table->string('type_document');
+            $table->string('document');
             $table->string('phone');
             $table->string('email');
             $table->string('addresses');
-            $table->string('department');
-            $table->string('city');
-            $table->string('neighborhood');
+            $table->string('department')->nullable();
+            $table->string('city')->nullable();
+            $table->string('neighborhood')->nullable();
+            $table->integer('status')->default(1)->comment('1 - active, 2 - inactive');
             $table->timestamps();
         });
     }
