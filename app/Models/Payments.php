@@ -23,4 +23,9 @@ class Payments extends Model
     public function loan(){
         return $this->belongsTo(Loans::class);
     }
+
+    public function getConsecutive()
+    {
+        return $this->count('loan_id');
+    }
 }

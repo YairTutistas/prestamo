@@ -31,11 +31,16 @@ class Loans extends Model
         return $this->belongsTo(Clients::class);
     }
 
-    public function payment(){
-        return $this->hasMany(Payments::class);
+    public function payments(){
+        return $this->hasMany(Payments::class, 'loan_id', 'id');
     }
 
     public function portafolio(){
         return $this->belongsTo(Portafolios::class);
+    }
+
+    public function getTotalPayments(){
+        $payments = $this->payments->sum('amount');
+        return $payments;
     }
 }

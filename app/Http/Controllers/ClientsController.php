@@ -36,11 +36,13 @@ class ClientsController extends Controller
 
     public function show($id){
         $client = Clients::findOrFail($id);
-        $payments = Clients::join('loans', 'clients.id', '=', 'loans.client_id')
+        $payments = Loans::join('clients', 'loans.client_id', '=', 'clients.id')
         ->join('payments', 'loans.id', '=', 'payments.loan_id')
         ->where('clients.id', $client->id)
-        ->select('payments.*', 'loans.id as loanName')
+        ->select('loans.*', 'payments.amount', 'payments.payment_date', 'payments.id as payment_id', 'loans.total_pay')
+        ->orderBy('loans.id')
         ->get();
+
         return view('client.view', compact('client', 'payments'));
     }
 

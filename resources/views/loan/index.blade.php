@@ -37,7 +37,7 @@
                 <tr>
                     <th>{{$loan->id}}</th>
                     <th>{{$loan->portafolio->name}}</th>
-                    <th>{{$loan->client->name}}</th>
+                    <th><a href="{{ route("showClient", $loan->client->id) }}">{{$loan->client->name}}</a></th>
                     <th>{{$loan->amount}}</th>
                     <th>{{$loan->interest_rate}}</th>
                     <th>{{$loan->deadlines}}</th>

@@ -22,7 +22,8 @@ class LoansController extends Controller
     }
 
     public function save(Request $request) {
-        // $data = $request->all();
+        $data = $request->all();
+        dd($data);
         // Sacar porcentaje
         $percentage = ($request->amount * $request->interest_rate) / 100;
         // Generar total a pagar

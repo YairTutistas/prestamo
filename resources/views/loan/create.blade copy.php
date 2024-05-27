@@ -42,8 +42,8 @@
             </div>
             <div class="col-md-6 mt-3">
                 <label for="quotaValue">{{ 'Quota value' }}</label>
-                <input type="text" name="loan[quota_value]" class="form-control" id="quotaValue" required
-                    placeholder="$10.000" readonly>
+                <input type="text" name="loan[quota_value]" class="form-control" id="quotaValue" required placeholder="$10.000"
+                    readonly>
             </div>
             <div class="col-md-12 mt-3">
                 <label for="paymentMethod">{{ 'Payment method' }}</label>
@@ -59,13 +59,13 @@
                 <input type="date" name="loan[start_date]" class="form-control" id="startDate" oninput="createPayment()">
             </div>
             <div class="col-md-4 mt-3">
-                <label for="endDate">{{ __('End date') }}</label>
+                <label for="endDate">{{__('End date')}}</label>
                 <input type="date" name="loan[end_date]" class="form-control" id="endDate" readonly>
             </div>
             <div class="col-md-4 mt-3">
                 <button id="save" class="btn btn-primary form-control mt-8">{{ __('Save') }}</button>
             </div>
-
+            
             <div class="col-md-12 mt-4" style="overflow: auto; max-height: 250px">
                 <table class="table table-striped">
                     <thead class="bg-light sticky-top top-0">
@@ -81,23 +81,22 @@
         </form>
     </div>
 
-    <script src="{{ asset('js/bundle.js') }}"></script>
+    <script src="{{ asset("js/bundle.js") }}"></script>
     <script>
-        // la varable SPECIAL_DATES contiene la libreria de dias especiales
+        // la varable holidays contiene la libreria de dias especiales
 
         $(document).ready(function() {
             $('#client').select2();
         });
 
         let payment_method = {
-            1: 1,
-            2: 7,
-            3: 15,
-            4: 30
+            1:1,
+            2:7,
+            3:15,
+            4:30
         }
 
         let BY_MONTH = false;
-
         function createPayment() {
             let table_body = document.querySelector('#table_payment_body');
             let paymentMethod = document.querySelector('#paymentMethod').value;
@@ -136,107 +135,55 @@
 
             let html = "";
             startDate = addDays(startDate, 0);
-            if (paymentMethod != 4) {
-                for (let index = 1; index <= deadlines; index++) {
-                    html += `<tr>`;
-                    html += `<td>`;
-                    html += `${index}`;
-                    html += `<input name="payment_plan[${index}][quota_number]" value="${index}" type="hidden" />`;
-                    html += `</td>`;
-                    html += `<td>`;
-                    html += `${quotaValue.value}`;
-                    html += `<input name="payment_plan[${index}][quota_value]" value="${limpiador(quotaValue.value)}" type="hidden" />`;
-                    html += `</td>`;
-                    html += `<td>`;
-                    html += `${startDate}`;
-                    html += `<input name="payment_plan[${index}][quota_date]" value="${startDate}" type="hidden" />`;
-                    html += `</td>`;
-                    html += `</tr>`;
+            console.log(startDate);
+            for (let index = 1; index <= deadlines; index++) {
+                html += `<tr>`;
+                html += `<td>`;
+                html += `${index}`;
+                html += `<input name="payment_plan[${index}][quota_number]" value="${index}" type="hidden" />`;
+                html += `</td>`;
+                html += `<td>`;
+                html += `${quotaValue.value}`;
+                html += `<input name="payment_plan[${index}][quota_value]" value="${limpiador(quotaValue.value)}" type="hidden" />`;
+                html += `</td>`;
+                html += `<td>`;
+                html += `${startDate}`;
+                html += `<input name="payment_plan[${index}][quota_date]" value="${startDate}" type="hidden" />`;
+                html += `</td>`;
+                html += `</tr>`;
 
+                if(BY_MONTH){
+                    if(paymentMethod != 4){
+                        startDate = addDays(startDate, payment_method[paymentMethod]);
+                    }else{
+                        startDate = addDays(startDate, 1, true);
+                    }
+                }else{
                     startDate = addDays(startDate, payment_method[paymentMethod]);
                 }
-                endDate.value = addDays(startDate, -payment_method[paymentMethod]);
-
-            }else{
-                startDate = startDate.split("-");
-                dates_month = generarFechasDePago(startDate[2], startDate[1], startDate[0], deadlines);
-                dates_month[0] = startDate.join("-");
-                
-                dates_month.forEach((element, index) => {
-                    element = addDays(element, 0);
-                    element = element.split("-");
-                    if(SPECIAL_DATES.isHoliday(new Date(element[0], element[1], element[2]))){
-                        // do the magic here 7u7h
-                    }
-
-                    html += `<tr>`;
-                    html += `<td>`;
-                    html += `${index +1}`;
-                    html += `<input name="payment_plan[${index +1}][quota_number]" value="${index +1}" type="hidden" />`;
-                    html += `</td>`;
-                    html += `<td>`;
-                    html += `${quotaValue.value}`;
-                    html += `<input name="payment_plan[${index +1}][quota_value]" value="${limpiador(quotaValue.value)}" type="hidden" />`;
-                    html += `</td>`;
-                    html += `<td>`;
-                    html += `${element}`;
-                    html += `<input name="payment_plan[${index +1}][quota_date]" value="${element}" type="hidden" />`;
-                    html += `</td>`;
-                    html += `</tr>`;
-                });
-                endDate.value = dates_month[dates_month.length -1];
             }
 
             table_body.innerHTML = html;
+            if(BY_MONTH){
+                if(paymentMethod != 4){
+                    endDate.value = addDays(startDate, -payment_method[paymentMethod]);
+                }else{
+                    endDate.value = addDays(startDate, -1, true);
+                }
+            }else{
+                endDate.value = addDays(startDate, -payment_method[paymentMethod]);
+            }
         }
 
         // Function to Add days to current date
-        function addDays(date, days) {
+        function addDays(date, days, month = false) {
             date = date.split('-');
             let newDate = new Date(date[0], date[1] - 1, date[2]);
-            let date_real = new Date(newDate.setDate(newDate.getDate() + days));
 
-            if(date_real.getDay() === 0){
-                date_real = new Date(date_real.getFullYear(), date_real.getMonth(), date_real.getDate() +1);
+            if(month){
+                return new Date(newDate.setMonth(newDate.getMonth() + days)).toISOString().split('T')[0];
             }
-
-            return date_real.toISOString().split('T')[0];
-        }
-
-        function generarFechasDePago(diaDePago, mesInicial, anioInicial, cantidadPagos) {
-            const fechasDePago = [];
-            let mes = mesInicial - 1; // En JavaScript, los meses van de 0 (enero) a 11 (diciembre)
-            let anio = anioInicial;
-
-            for (let i = 0; i < cantidadPagos; i++) {
-                let fechaPago;
-
-                if (diaDePago > 30) {
-                    diaDePago = 30; // Ajustamos el día de pago si es mayor a 30
-                }
-
-                // Obtenemos el último día del mes actual
-                let ultimoDiaDelMes = new Date(anio, mes + 1, 0).getDate();
-
-                if (diaDePago > ultimoDiaDelMes) {
-                    // Si el día de pago no existe en el mes actual, lo movemos al primero del mes siguiente
-                    fechaPago = new Date(anio, mes + 1, 1);
-                } else {
-                    // Si el día de pago existe en el mes actual
-                    fechaPago = new Date(anio, mes, diaDePago);
-                }
-
-                fechasDePago.push(fechaPago);
-
-                // Avanzamos al siguiente mes
-                mes++;
-                if (mes > 11) {
-                    mes = 0;
-                    anio++;
-                }
-            }
-
-            return fechasDePago.map(fecha => fecha.toISOString().split('T')[0]); // Convertimos a formato YYYY-MM-DD
+            return new Date(newDate.setDate(newDate.getDate() + days)).toISOString().split('T')[0];
         }
 
         function limpiador(data) {

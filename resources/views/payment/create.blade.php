@@ -18,7 +18,7 @@
                 <label for="client">{{ __('Client') }}</label>
                 <select name="loan_id" id="client" class="form-control" required>
                     @foreach ($loans as $loan)
-                        <option value="{{$loan->id}}">{{$loan->client->name}}</option>
+                        <option value="{{$loan->id}}">{{$loan->client->name ." - ". $loan->id ." (". $loan->total_pay .")"}}</option>
                     @endforeach
                 </select>
             </div>
