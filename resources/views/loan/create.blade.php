@@ -141,19 +141,20 @@
                     html += `<tr>`;
                     html += `<td>`;
                     html += `${index}`;
-                    html += `<input name="payment_plan[${index}][quota_number]" value="${index}" type="hidden" />`;
+                    html += `<input name="payment_plan[${index}][quota]" value="${index}" type="hidden" />`;
                     html += `</td>`;
                     html += `<td>`;
                     html += `${quotaValue.value}`;
-                    html += `<input name="payment_plan[${index}][quota_value]" value="${limpiador(quotaValue.value)}" type="hidden" />`;
+                    html += `<input name="payment_plan[${index}][indivudual_value]" value="${limpiador(quotaValue.value)}" type="hidden" />`;
                     html += `</td>`;
                     html += `<td>`;
                     html += `${startDate}`;
-                    html += `<input name="payment_plan[${index}][quota_date]" value="${startDate}" type="hidden" />`;
+                    html += `<input name="payment_plan[${index}][payment_date]" value="${startDate}" type="hidden" />`;
                     html += `</td>`;
                     html += `</tr>`;
 
                     startDate = addDays(startDate, payment_method[paymentMethod]);
+                    startDate = consultHolidays(startDate)
                 }
                 endDate.value = addDays(startDate, -payment_method[paymentMethod]);
 
@@ -161,26 +162,27 @@
                 startDate = startDate.split("-");
                 dates_month = generarFechasDePago(startDate[2], startDate[1], startDate[0], deadlines);
                 dates_month[0] = startDate.join("-");
-                
                 dates_month.forEach((element, index) => {
                     element = addDays(element, 0);
-                    element = element.split("-");
-                    if(SPECIAL_DATES.isHoliday(new Date(element[0], element[1], element[2]))){
-                        // do the magic here 7u7h
-                    }
+                    // console.log(element)
+                    element = consultHolidays(element)
+                    
+                    // if(SPECIAL_DATES.isHoliday(new Date(element[0], element[1], element[2]))){
+                    //     // do the magic here 7u7h
+                    // }
 
                     html += `<tr>`;
                     html += `<td>`;
                     html += `${index +1}`;
-                    html += `<input name="payment_plan[${index +1}][quota_number]" value="${index +1}" type="hidden" />`;
+                    html += `<input name="payment_plan[${index +1}][quota]" value="${index +1}" type="hidden" />`;
                     html += `</td>`;
                     html += `<td>`;
                     html += `${quotaValue.value}`;
-                    html += `<input name="payment_plan[${index +1}][quota_value]" value="${limpiador(quotaValue.value)}" type="hidden" />`;
+                    html += `<input name="payment_plan[${index +1}][indivudual_value]" value="${limpiador(quotaValue.value)}" type="hidden" />`;
                     html += `</td>`;
                     html += `<td>`;
                     html += `${element}`;
-                    html += `<input name="payment_plan[${index +1}][quota_date]" value="${element}" type="hidden" />`;
+                    html += `<input name="payment_plan[${index +1}][payment_date]" value="${element}" type="hidden" />`;
                     html += `</td>`;
                     html += `</tr>`;
                 });
@@ -188,6 +190,17 @@
             }
 
             table_body.innerHTML = html;
+        }
+
+        function consultHolidays(data) {
+            date_ok = data;
+            data = data.split("-");
+            responseHoliday = SPECIAL_DATES.isHoliday(new Date(data[0], data[1] - 1, data[2]));
+            if (responseHoliday === true) {
+                date_ok = data[0] + "-" + data[1] + "-" + (Number(data[2]) + 1)
+                date_ok = consultHolidays(date_ok)
+            } 
+            return date_ok;
         }
 
         // Function to Add days to current date

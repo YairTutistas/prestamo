@@ -23,25 +23,26 @@ class LoansController extends Controller
 
     public function save(Request $request) {
         $data = $request->all();
-        dd($data);
+        // dd($data);
         // Sacar porcentaje
         $percentage = ($request->amount * $request->interest_rate) / 100;
         // Generar total a pagar
         $total_pay = $request->amount + $percentage;
 
         $loan = new Loans();
-        $loan->portafolio_id = $request->portafolio_id;
+        $loan->portafolio_id = $data['loan']['portafolio_id'];
         $loan->user_id = 1;
-        $loan->client_id = $request->client_id;
-        $loan->amount = $request->amount;
-        $loan->interest_rate = $request->interest_rate;
-        $loan->deadlines = $request->deadlines;
-        $loan->payment_method = $request->payment_method;
-        $loan->quota_value = $request->quota_value;
-        $loan->start_date = $request->start_date;
-        $loan->end_date = $request->end_date;
+        $loan->client_id = $data['loan']['client_id'];
+        $loan->amount = preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']);
+        $loan->interest_rate = $data['loan']['interest_rate'];
+        $loan->deadlines = $data['loan']['deadlines'];
+        $loan->payment_method = $data['loan']['payment_method'];
+        $loan->quota_value = preg_replace('([^A-Za-z0-9])', '', $data['loan']['quota_value']);
+        $loan->start_date = $data['loan']['start_date'];
+        $loan->end_date = $data['loan']['end_date'];
         $loan->total_pay = $total_pay;
         $loan->save();
+        $loan->paymentPlans()->createMany($data["payment_plan"]);
 
         $portafolio_id = $loan->portafolio_id;
         $client_id = $loan->client_id;

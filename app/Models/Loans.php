@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Clients;
 use App\Models\Payments;
 use App\Models\Portafolios;
+use App\Models\Payment_plans;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -42,5 +43,9 @@ class Loans extends Model
     public function getTotalPayments(){
         $payments = $this->payments->sum('amount');
         return $payments;
+    }
+    
+    public function paymentPlans(){
+        return $this->hasMany(Payment_plans::class, 'loan_id', 'id');
     }
 }
