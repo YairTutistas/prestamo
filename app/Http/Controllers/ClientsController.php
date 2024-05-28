@@ -2,14 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Loans;
 use App\Models\Clients;
 use App\Models\Payments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientsController extends Controller
 {
     public function index(){
+        if (Auth::user()->hasAnyRole('Admin', 'Master')) {
+            // return view('client.index', compact('clients'));
+            return redirect()->route('admin');
+            
+        } elseif (Auth::user()->hasAnyRole('Cobrador')){
+            // return view('cobrador.index', compact('clients'));
+            return redirect()->route('cobrador');
+        }
+    }
+
+    public function indexCobrador(){
+        // $loans = Loans::join('portafolios', 'loans.portafolio_id', 'portafolios.id')
+        // ->where('portafolios.user_id', Auth::user()->id)
+        // ->select('loans.*')
+        // ->get();
+
+        // Traer toda los prestamos con relaciones eloquent
+        $loans = Auth::user()->getLoansByPortafolio->where('status', 1);
+        return view('cobrador.index', compact('loans'));
+    }
+    public function indexAdmin(){
         $clients = Clients::all();
         return view('client.index', compact('clients'));
     }

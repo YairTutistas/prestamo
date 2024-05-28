@@ -25,9 +25,9 @@ class LoansController extends Controller
         $data = $request->all();
         // dd($data);
         // Sacar porcentaje
-        $percentage = ($request->amount * $request->interest_rate) / 100;
+        $percentage = (preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']) * $data['loan']['interest_rate']) / 100;
         // Generar total a pagar
-        $total_pay = $request->amount + $percentage;
+        $total_pay = preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']) + $percentage;
 
         $loan = new Loans();
         $loan->portafolio_id = $data['loan']['portafolio_id'];

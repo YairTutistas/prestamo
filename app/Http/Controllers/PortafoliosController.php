@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Portafolios;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,8 @@ class PortafoliosController extends Controller
 
     public function show($id){
         $portafolio = Portafolios::findOrFail($id);
-        return $portafolio;
+        $users = User::all();
+        return view('portafolio.show', compact('portafolio', 'users'));
     }
 
     public function update($id, Request $request){
@@ -34,7 +36,7 @@ class PortafoliosController extends Controller
         $portafolio->name = $request->name;
         $portafolio->user_id = $request->user_id;
         $portafolio->save();
-        return 'Portafolio actualizado correctamente';
+        return redirect()->route('portafolios')->with('status', 'Successfully updated portafolio');
     }
 
     public function delete($id){

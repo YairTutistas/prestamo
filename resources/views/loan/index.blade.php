@@ -25,8 +25,8 @@
                 <th>{{__('Amount')}}</th>
                 <th>{{__('Interest rate')}}</th>
                 <th>{{__('Deadlines')}}</th>
-                <th>{{__('Quota value')}}</th>
                 <th>{{__('Payment method')}}</th>
+                <th>{{__('Quota value')}}</th>
                 <th>{{__('Total to pay')}}</th>
                 <th>{{__('Start date')}}</th>
                 <th></th>

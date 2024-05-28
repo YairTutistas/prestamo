@@ -38,6 +38,12 @@ Route::middleware('auth')->group(function () {
 
     // Clients
     Route::get('/clients', [ClientsController::class, 'index'])->name('clients');
+    Route::prefix('admin')->group(function () {
+        Route::get('/clients', [ClientsController::class, 'indexAdmin'])->name('admin');
+    });
+    Route::prefix('cobrador')->group(function () {
+        Route::get('/clients', [ClientsController::class, 'indexCobrador'])->name('cobrador');
+    });
     Route::get('/createClient', [ClientsController::class, 'create'])->name('createClient');
     Route::post('/saveClient', [ClientsController::class, 'save'])->name('saveClient');
     Route::get('deleteClient/{id}', [ClientsController::class, 'delete'])->name('deleteClient');

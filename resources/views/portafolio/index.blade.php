@@ -21,6 +21,8 @@
             <tr>
                 <th>{{__('#')}}</th>
                 <th>{{__('Name')}}</th>
+                <th>{{__('User')}}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +30,10 @@
                 <tr>
                     <th>{{$portafolio->id}}</th>
                     <th>{{$portafolio->name}}</th>
+                    <th>{{$portafolio->user->name}}</th>
+                    <th>
+                        <a href="{{route('showPortafolio', $portafolio)}}" class="btn btn-primary">Edit</a>
+                    </th>
                 </tr>
             @endforeach
         </tbody>

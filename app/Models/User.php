@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Loans;
+use App\Models\Portafolios;
 use Laravel\Sanctum\HasApiTokens;
+use Database\Factories\UserFactory;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Database\Factories\UserFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -43,4 +45,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function portafolios(){
+        return $this->hasMany(Portafolios::class, 'user_id', 'id');
+    }
+
+    public function getLoansByPortafolio(){
+        // Devuelve todos los prestamos relacionado a la cartera de un usuario, solo si se tiene la relaciones creadas.
+        return $this->through('portafolios')->has('loans');
+    }
 }

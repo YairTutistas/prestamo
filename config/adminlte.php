@@ -371,9 +371,21 @@ return [
         [
             'text' => 'Clients',
             'icon' => 'fas fa-fw fa-user',
-            'icon_color' => 'blue',
+            'icon_color' => 'white',
             'url' => 'clients',
-            'can' => 'clients',
+        ],
+        [
+            'text' => 'Portafolios',
+            'icon' => 'fas fa-fw fa-briefcase',
+            'icon_color' => 'white',
+            'url' => 'portafolios',
+            'can' => 'portafolios',
+        ],
+        [
+            'text' => 'Loans',
+            'icon' => 'fas fa-fw fa-dollar-sign',
+            'icon_color' => 'white',
+            'url' => 'loans',
         ],
         [
             'text' => 'Payments',
@@ -381,19 +393,6 @@ return [
             'icon_color' => 'yellow',
             'url' => 'payments',
             'can' => 'payments',
-        ],
-        [
-            'text' => 'Portafolios',
-            'icon' => 'fas fa-fw fa-briefcase',
-            'icon_color' => 'cyan',
-            'url' => 'portafolios',
-            'can' => 'portafolios',
-        ],
-        [
-            'text' => 'Loans',
-            'icon' => 'fas fa-fw fa-dollar-sign',
-            'icon_color' => 'cyan',
-            'url' => 'loans',
         ],
     ],
 

@@ -3,7 +3,7 @@
 @section('title', 'Payments')
 
 @section('content_header')
-    <h1>Payments</h1>
+    <h1>{{__('Payments')}}</h1>
 @stop
 
 @section('content')
@@ -19,9 +19,10 @@
     <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>{{__('loan')}}</th>
-                <th>{{__('amount')}}</th>
-                <th>{{__('payment_date')}}</th>
+                <th>{{__('Loan')}}</th>
+                <th>{{__('Amount')}}</th>
+                <th>{{__('Payment date')}}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +31,13 @@
                     <th>{{$payment->loan->client->name}}</th>
                     <th>{{$payment->amount}}</th>
                     <th>{{$payment->payment_date}}</th>
+                    <th>
+                        <form action="{{ route('deletePayment', $payment->id) }}" method="POST" id="delete-form-{{ $payment->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger btn-delete" data-id="{{ $payment->id }}">{{ __('Delete') }}</button>
+                        </form>
+                    </th>
                 </tr>
             @endforeach
         </tbody>

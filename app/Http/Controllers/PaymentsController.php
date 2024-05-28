@@ -47,6 +47,6 @@ class PaymentsController extends Controller
     public function delete($id){
         $payment = Payments::find($id);
         $payment->delete();
-        return 'Pago eliminado correctamente';
+        return redirect()->route('payments')->with('status', 'Successfully deleted payment.');
     }
 }
