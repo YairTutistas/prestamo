@@ -44,7 +44,7 @@ class ClientsController extends Controller
     public  function save(Request $request){
         // $data = $request->all();
         $client = new Clients();
-        $client->user_id = 1;
+        $client->user_id = Auth::user()->id;
         $client->name = $request->name;
         $client->type_document = $request->type_document;
         $client->document = $request->document;
