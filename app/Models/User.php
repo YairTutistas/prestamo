@@ -65,6 +65,10 @@ class User extends Authenticatable
 
     public function getLoansByPortafolio(){
         // Devuelve todos los prestamos relacionado a la cartera de un usuario, solo si se tiene la relaciones creadas.
+        if($this->hasRole("Cobrador")){
+            return $this->through('portafolios')->has('loans')->where("debt_colletor", $this->id);
+        }
+
         return $this->through('portafolios')->has('loans');
     }
 }

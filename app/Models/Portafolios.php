@@ -14,7 +14,7 @@ class Portafolios extends Model
 
     protected $fillable = [
         'name',
-        'user_rol',
+        'debt_colletor',
         'user_id',
     ];
 
