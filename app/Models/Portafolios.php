@@ -18,12 +18,12 @@ class Portafolios extends Model
         'user_id',
     ];
 
-    public function userRol(){
-        return $this->belongsTo(User::class, 'user_rol', 'id');
-    }
-
-    public function userId(){
+    public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    
+    public function debt_colletor(){
+        return $this->belongsTo(User::class, 'debt_colletor', 'id');
     }
     
     public function loans(){

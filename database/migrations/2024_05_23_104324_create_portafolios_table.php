@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('user_rol');
-            $table->foreign('user_rol')->references('id')->on('users');
+            $table->unsignedBigInteger('debt_colletor');
+            $table->foreign('debt_colletor')->references('id')->on('users');
             $table->timestamps();
         });
     }

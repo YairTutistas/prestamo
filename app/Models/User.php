@@ -51,6 +51,10 @@ class User extends Authenticatable
         return $this->hasMany(Portafolios::class);
     }
 
+    public function portafoliosByDebtCollector(){
+        return $this->hasMany(Portafolios::class, 'debt_colletor', 'id');
+    }
+
     public function loans(){
         return $this->hasMany(Loans::class, 'user_id', 'id');
     }
