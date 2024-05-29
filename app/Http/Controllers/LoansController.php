@@ -6,24 +6,25 @@ use App\Models\Loans;
 use App\Models\Clients;
 use App\Models\Portafolios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PortafolioClientController;
 
 class LoansController extends Controller
 {
     public function index() {
-        $loans = Loans::all();
+        $loans = Auth::user()->loans;
         return view('loan.index', compact('loans'));
     }
 
     public function create() {
-        $portafolios = Portafolios::all();
-        $clients = Clients::all();
+        $user = Auth::user();
+        $portafolios = $user->portafolios;
+        $clients = $user->clients;
         return view('loan.create', compact('portafolios', 'clients'));
     }
 
     public function save(Request $request) {
         $data = $request->all();
-        // dd($data);
         // Sacar porcentaje
         $percentage = (preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']) * $data['loan']['interest_rate']) / 100;
         // Generar total a pagar
@@ -52,12 +53,14 @@ class LoansController extends Controller
     }
 
     public function show($id) {
+        $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $portafolios = Portafolios::all();
         return view('loan.edit', compact('loan', 'portafolios'));
     }
 
     public function update($id, Request $request) {
+        $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $loan->portafolio_id = $request->portafolio_id;
         $loan->user_id = 1;
@@ -74,6 +77,7 @@ class LoansController extends Controller
     }
 
     public function delete($id) {
+        $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $loan->delete();
         return redirect()->route('loans')->with('status', 'Successfully delete loan');

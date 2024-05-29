@@ -7,7 +7,7 @@
 
 @section('content')
     <div class="container">
-        <form action="{{route('updateLoan', $loan->id)}}" method="POST" class="row g-3">
+        <form action="{{route('updateLoan', Crypt::encryptString($loan->id))}}" method="POST" class="row g-3">
             @csrf
             <div class="col-md-12 mb-3">
                 <label for="portafolio">{{__('Portafolio')}}</label>

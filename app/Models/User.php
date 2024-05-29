@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Loans;
+use App\Models\Clients;
 use App\Models\Portafolios;
 use Laravel\Sanctum\HasApiTokens;
 use Database\Factories\UserFactory;
@@ -47,7 +48,15 @@ class User extends Authenticatable
     ];
 
     public function portafolios(){
-        return $this->hasMany(Portafolios::class, 'user_id', 'id');
+        return $this->hasMany(Portafolios::class);
+    }
+
+    public function loans(){
+        return $this->hasMany(Loans::class, 'user_id', 'id');
+    }
+
+    public function clients(){
+        return $this->hasMany(Clients::class, 'user_id', 'id');
     }
 
     public function getLoansByPortafolio(){

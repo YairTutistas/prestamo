@@ -37,7 +37,7 @@
                 <tr>
                     <th>{{$loan->id}}</th>
                     <th>{{$loan->portafolio->name}}</th>
-                    <th><a href="{{ route("showClient", $loan->client->id) }}">{{$loan->client->name}}</a></th>
+                    <th><a href="{{ route("showClient", Crypt::encryptString($loan->client->id)) }}">{{$loan->client->name}}</a></th>
                     <th>{{$loan->amount}}</th>
                     <th>{{$loan->interest_rate}}</th>
                     <th>{{$loan->deadlines}}</th>
@@ -61,8 +61,8 @@
                     <th class="text-success">{{$loan->total_pay}}</th>
                     <th>{{$loan->start_date}}</th>
                     <th>
-                        <a href="{{route('showLoan', $loan->id)}}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('deleteLoan', $loan->id) }}" method="POST" id="delete-form-{{ $loan->id }}">
+                        <a href="{{route('showLoan', Crypt::encryptString($loan->id))}}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('deleteLoan', Crypt::encryptString($loan->id)) }}" method="POST" id="delete-form-{{ $loan->id }}">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-danger btn-delete" data-id="{{ $loan->id }}">{{ __('Delete') }}</button>

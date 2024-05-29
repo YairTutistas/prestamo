@@ -14,11 +14,16 @@ class Portafolios extends Model
 
     protected $fillable = [
         'name',
+        'user_rol',
         'user_id',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function userRol(){
+        return $this->belongsTo(User::class, 'user_rol', 'id');
+    }
+
+    public function userId(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
     
     public function loans(){

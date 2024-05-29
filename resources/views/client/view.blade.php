@@ -8,10 +8,10 @@
 
 @section('content')
     <div class="col-12 d-flex justify-content-end">
-        <a href="{{ route('loansClient', $client) }}" type="button" class="btn btn-link">{{ __('Show loans') }}</a>
+        <a href="{{ route('loansClient', Crypt::encryptString($client->id)) }}" type="button" class="btn btn-link">{{ __('Show loans') }}</a>
     </div>
     <div class="container">
-        <form action="{{ route('updateClient', $client->id) }}" method="POST" class="row g-3">
+        <form action="{{ route('updateClient', Crypt::encryptString($client->id)) }}" method="POST" class="row g-3">
             @csrf
             <div class="mb-3 col-md-12">
                 <label for="name" class="form-label">{{ __('Name') }}</label>
@@ -45,7 +45,7 @@
             </div>
             <div class="mb-3 col-md-6">
                 <label for="phone" class="form-label">{{ __('Phone') }}</label>
-                <input type="number" name="phone" class="form-control" id="phone" value="{{ $client->phone }}"
+                <input type="text" name="phone" class="form-control" id="phone" value="{{ $client->phone }}"
                     required>
             </div>
             <div class="mb-3 col-md-6">

@@ -36,8 +36,8 @@
                     <th>{{$client->phone}}</th>
                     <th>{{$client->email}}</th>
                     <th>
-                        <a href="{{route('showClient', $client->id)}}" class="btn btn-primary">{{__('Details')}}</a>
-                        <a href="{{route('deleteClient', $client->id)}}" class="btn btn-danger">{{__('Delete')}}</a>
+                        <a href="{{route('showClient', Crypt::encryptString($client->id))}}" class="btn btn-primary">{{__('Details')}}</a>
+                        <a href="{{route('deleteClient', Crypt::encryptString($client->id))}}" class="btn btn-danger">{{__('Delete')}}</a>
                     </th>
                 </tr>
             @endforeach

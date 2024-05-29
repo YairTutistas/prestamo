@@ -30,9 +30,9 @@
                 <tr>
                     <th>{{$portafolio->id}}</th>
                     <th>{{$portafolio->name}}</th>
-                    <th>{{$portafolio->user->name}}</th>
+                    <th>{{$portafolio->userRol->name}}</th>
                     <th>
-                        <a href="{{route('showPortafolio', $portafolio)}}" class="btn btn-primary">Edit</a>
+                        <a href="{{route('showPortafolio', Crypt::encryptString($portafolio->id))}}" class="btn btn-primary">Edit</a>
                     </th>
                 </tr>
             @endforeach

@@ -5,33 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Portafolios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PortafoliosController extends Controller
 {
     public function index(){
-        $portafolios = Portafolios::all();
+        $portafolios = Auth::user()->portafolios;
         return view('portafolio.index', compact('portafolios'));
     }
 
     public function create(){
-        return view('portafolio.create');
+        $userRol = User::role('Cobrador')->get();
+        return view('portafolio.create', compact('userRol'));
     }
     public function save(Request $request){
         // $data = $request->all();
         $portafolio = new Portafolios();
         $portafolio->name = $request->name;
-        $portafolio->user_id = 1;
+        $portafolio->user_id = Auth::user()->id;
+        $portafolio->user_rol = $request->user_rol;
         $portafolio->save();
         return redirect()->route('portafolios')->with('status', 'Successfully created portafolio');
     }
 
     public function show($id){
+        $id = $this->decrypt($id);
         $portafolio = Portafolios::findOrFail($id);
         $users = User::all();
         return view('portafolio.show', compact('portafolio', 'users'));
     }
 
     public function update($id, Request $request){
+        $id = $this->decrypt($id);
         $portafolio = Portafolios::findOrFail($id);
         $portafolio->name = $request->name;
         $portafolio->user_id = $request->user_id;

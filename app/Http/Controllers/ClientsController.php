@@ -33,7 +33,8 @@ class ClientsController extends Controller
         return view('cobrador.index', compact('loans'));
     }
     public function indexAdmin(){
-        $clients = Clients::all();
+        $user = Auth::user();
+        $clients = $user->clients;
         return view('client.index', compact('clients'));
     }
 
@@ -54,10 +55,11 @@ class ClientsController extends Controller
         $client->city = $request->city;
         $client->neighborhood = $request->neighborhood;
         $client->save();
-        return redirect()->route('clients')->with('status', 'Successfully created client');
+        return redirect()->route('admin')->with('status', 'Successfully created client');
     }
 
     public function show($id){
+        $id = $this->decrypt($id);
         $client = Clients::findOrFail($id);
         $payments = Loans::join('clients', 'loans.client_id', '=', 'clients.id')
         ->join('payments', 'loans.id', '=', 'payments.loan_id')
@@ -70,6 +72,7 @@ class ClientsController extends Controller
     }
 
     public function update($id, Request $request){
+        $id = $this->decrypt($id);
         $client = Clients::find($id);
         $client->user_id = 1;
         $client->name = $request->name;
@@ -82,17 +85,19 @@ class ClientsController extends Controller
         $client->city = $request->city;
         $client->neighborhood = $request->neighborhood;
         $client->save();
-        return redirect()->route('clients')->with('status', 'Successfully updated client');
+        return redirect()->route('admin')->with('status', 'Successfully updated client');
     }
 
     public function delete($id) {
+        $id = $this->decrypt($id);
         $data = Clients::find($id);
         $data->delete();
-        return redirect()->route('clients')->with('status', 'Successfully deleted client');
+        return redirect()->route('admin')->with('status', 'Successfully deleted client');
     }
 
-    public function loans(Clients $client){
-        $loansClient = Loans::where('client_id', $client->id)->get();
+    public function loans($id){
+        $id = $this->decrypt($id);
+        $loansClient = Loans::where('client_id', $id)->get();
         return view('client.loans', compact('loansClient'));
     }
 }
