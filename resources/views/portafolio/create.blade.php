@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-12 mt-3">
                 <label for="userRol">{{__('User')}}</label>
-                <select name="user_rol" class="form-control" id="userRol">
+                <select name="debt_collector" class="form-control" id="debt_collector">
                     @foreach ($userRol as $user)
                         <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach

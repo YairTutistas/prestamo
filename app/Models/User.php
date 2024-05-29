@@ -52,7 +52,7 @@ class User extends Authenticatable
     }
 
     public function portafoliosByDebtCollector(){
-        return $this->hasMany(Portafolios::class, 'debt_colletor', 'id');
+        return $this->hasMany(Portafolios::class, 'debt_collector', 'id');
     }
 
     public function loans(){
@@ -66,7 +66,7 @@ class User extends Authenticatable
     public function getLoansByPortafolio(){
         // Devuelve todos los prestamos relacionado a la cartera de un usuario, solo si se tiene la relaciones creadas.
         if($this->hasRole("Cobrador")){
-            return $this->through('portafolios')->has('loans')->where("debt_colletor", $this->id);
+            return $this->through('portafolios')->has('loans')->where("debt_collector", $this->id);
         }
 
         return $this->through('portafolios')->has('loans');

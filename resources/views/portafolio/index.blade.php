@@ -30,7 +30,7 @@
                 <tr>
                     <th>{{$portafolio->id}}</th>
                     <th>{{$portafolio->name}}</th>
-                    <th>{{$portafolio->userRol->name}}</th>
+                    <th>{{$portafolio->getDebtCollector->name}}</th>
                     <th>
                         <a href="{{route('showPortafolio', Crypt::encryptString($portafolio->id))}}" class="btn btn-primary">Edit</a>
                     </th>

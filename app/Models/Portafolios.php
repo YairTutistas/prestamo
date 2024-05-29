@@ -14,7 +14,7 @@ class Portafolios extends Model
 
     protected $fillable = [
         'name',
-        'debt_colletor',
+        'debt_collector',
         'user_id',
     ];
 
@@ -22,8 +22,8 @@ class Portafolios extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
     
-    public function debt_colletor(){
-        return $this->belongsTo(User::class, 'debt_colletor', 'id');
+    public function getDebtCollector(){
+        return $this->belongsTo(User::class, 'debt_collector', 'id');
     }
     
     public function loans(){

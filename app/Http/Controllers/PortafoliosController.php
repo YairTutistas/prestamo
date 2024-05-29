@@ -23,7 +23,7 @@ class PortafoliosController extends Controller
         $portafolio = new Portafolios();
         $portafolio->name = $request->name;
         $portafolio->user_id = Auth::user()->id;
-        $portafolio->user_rol = $request->user_rol;
+        $portafolio->debt_collector = $request->debt_collector;
         $portafolio->save();
         return redirect()->route('portafolios')->with('status', 'Successfully created portafolio');
     }
