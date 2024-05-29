@@ -32,7 +32,7 @@
                     <th>{{$payment->amount}}</th>
                     <th>{{$payment->payment_date}}</th>
                     <th>
-                        <form action="{{ route('deletePayment', $payment->id) }}" method="POST" id="delete-form-{{ $payment->id }}">
+                        <form action="{{ route('deletePayment', Crypt::encryptString($payment->id)) }}" method="POST" id="delete-form-{{ $payment->id }}">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-danger btn-delete" data-id="{{ $payment->id }}">{{ __('Delete') }}</button>

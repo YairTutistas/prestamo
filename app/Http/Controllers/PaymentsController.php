@@ -45,6 +45,7 @@ class PaymentsController extends Controller
     }
 
     public function delete($id){
+        $this->decrypt($id);
         $payment = Payments::find($id);
         $payment->delete();
         return redirect()->route('payments')->with('status', 'Successfully deleted payment.');

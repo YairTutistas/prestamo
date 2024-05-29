@@ -19,8 +19,8 @@ class UserSeeder extends Seeder
     {
         $user = User::factory()->create([
             'name' => 'Yair Tutistas',
-            'email' => 'yaiir012@gmail.com',
-            'password' => Hash::make('Temporal2021*'),
+            'email' => 'prueba@yopmail.com',
+            'password' => Hash::make('123456'),
         ]);
 
         $user->syncRoles('Master');

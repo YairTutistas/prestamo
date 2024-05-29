@@ -138,6 +138,11 @@
             startDate = addDays(startDate, 0);
             if (paymentMethod != 4) {
                 for (let index = 1; index <= deadlines; index++) {
+                    if(index !== 1){
+                        startDate = addDays(startDate, payment_method[paymentMethod]);
+                        startDate = consultHolidays(startDate);
+                    }
+
                     html += `<tr>`;
                     html += `<td>`;
                     html += `${index}`;
@@ -152,11 +157,8 @@
                     html += `<input name="payment_plan[${index}][payment_date]" value="${startDate}" type="hidden" />`;
                     html += `</td>`;
                     html += `</tr>`;
-
-                    startDate = addDays(startDate, payment_method[paymentMethod]);
-                    startDate = consultHolidays(startDate)
                 }
-                endDate.value = addDays(startDate, -payment_method[paymentMethod]);
+                endDate.value = startDate;
 
             }else{
                 startDate = startDate.split("-");
@@ -197,7 +199,10 @@
             data = data.split("-");
             responseHoliday = SPECIAL_DATES.isHoliday(new Date(data[0], data[1] - 1, data[2]));
             if (responseHoliday === true) {
-                date_ok = data[0] + "-" + data[1] + "-" + (Number(data[2]) + 1)
+                let day = (Number(data[2]) + 1);
+                day = (day > 9) ? day : "0"+ day;
+                
+                date_ok = data[0] + "-" + data[1] + "-" + day;
                 date_ok = consultHolidays(date_ok)
             } 
             return date_ok;
