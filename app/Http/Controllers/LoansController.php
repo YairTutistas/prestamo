@@ -97,7 +97,7 @@ class LoansController extends Controller
     }
 
     public function loanPendients(){
-        $loans = Loans::where('status', 3)->get();
+        $loans = Auth::user()->getLoansByPortafolio->where('status', 3);
         return view('loan.pendients', compact('loans'));
     }
 
@@ -105,6 +105,7 @@ class LoansController extends Controller
         $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $loan->status = 1;
+        $loan->user_id = Auth::user()->id;
         $loan->save();
         return redirect()->route('pendientLoan')->with('status', 'Successfully approved loan');
         

@@ -90,4 +90,15 @@ class User extends Authenticatable
             return $loan->client;
         });
     }
+    
+    public function getPaymentsByPortafolio(){
+        if($this->hasRole("Cobrador")){
+            return $this->through('portafoliosByDebtCollector')->has('loans')->get()->map(function($loan){
+                return $loan->payments;
+            })->flatten();
+        }
+        return $this->through('portafolios')->has('loans')->get()->map(function($loan){
+            return $loan->payments;
+        })->flatten();
+    }
 }

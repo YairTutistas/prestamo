@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123456'),
         ]);
 
-        $user->syncRoles('Master');
+        $user->syncRoles('Admin');
 
         // User::factory()->count(50)->create();
         Clients::factory()->count(150)->create();

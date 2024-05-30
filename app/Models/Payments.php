@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Loans;
+use App\Models\Portafolios;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

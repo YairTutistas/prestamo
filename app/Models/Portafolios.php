@@ -37,4 +37,8 @@ class Portafolios extends Model
         return $this->belongsToMany(Clients::class, "loans", 'portafolio_id', 'client_id');
     }
 
+    public function getPaymentsByLoans($user_id){
+        return $this->where("user_id". $user_id);
+    }
+
 }

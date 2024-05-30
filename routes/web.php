@@ -77,11 +77,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/createPayment', [PaymentsController::class, 'create'])->name('createPayment');
     Route::post('/savePayment', [PaymentsController::class, 'save'])->name('savePayment');
     Route::get('/showPayment/{id}', [PaymentsController::class, 'show'])->name('showPayment');
-    Route::delete('/deletePayment/{id}', [PaymentsController::class, 'delete'])->name('deletePayment');
 
 
-    // Usuario
-    Route::post('/createUser', [RegisterController::class, 'create']);
+    Route::group(['middleware' => ['role:Admin']], function () { 
+        Route::delete('/deletePayment/{id}', [PaymentsController::class, 'delete'])->name('deletePayment');
+
+    });
 });
 
 require __DIR__.'/auth.php';

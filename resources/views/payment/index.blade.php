@@ -22,7 +22,9 @@
                 <th>{{__('Loan')}}</th>
                 <th>{{__('Amount')}}</th>
                 <th>{{__('Payment date')}}</th>
+                @can('deletePayment')
                 <th></th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -31,6 +33,7 @@
                     <th>{{$payment->loan->client->name}}</th>
                     <th>{{$payment->amount}}</th>
                     <th>{{$payment->payment_date}}</th>
+                    @can('deletePayment')
                     <th>
                         <form action="{{ route('deletePayment', Crypt::encryptString($payment->id)) }}" method="POST" id="delete-form-{{ $payment->id }}">
                             @csrf
@@ -38,6 +41,7 @@
                             <button type="button" class="btn btn-danger btn-delete" data-id="{{ $payment->id }}">{{ __('Delete') }}</button>
                         </form>
                     </th>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>
