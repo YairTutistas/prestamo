@@ -17,10 +17,21 @@ class LoansController extends Controller
     }
 
     public function create() {
-        $user = Auth::user();
-        $portafolios = $user->portafolios;
-        $clients = $user->clients;
-        return view('loan.create', compact('portafolios', 'clients'));
+
+        if (Auth::user()->hasAnyRole('Admin')) {
+            $user = Auth::user();
+            $portafolios = $user->portafolios;
+            $clients = $user->clients;
+            return view('loan.create', compact('portafolios', 'clients'));
+            
+        } elseif (Auth::user()->hasAnyRole('Cobrador')){
+            $user = Auth::user();
+            $portafolios = $user->portafoliosByDebtCollector;
+            $clients = $user->getClientsByPortafolio();
+            // dd($clients);
+            return view('loan.create', compact('portafolios', 'clients'));
+        }
+
     }
 
     public function save(Request $request) {
@@ -32,7 +43,7 @@ class LoansController extends Controller
 
         $loan = new Loans();
         $loan->portafolio_id = $data['loan']['portafolio_id'];
-        $loan->user_id = 1;
+        $loan->user_id = Auth::user()->id;
         $loan->client_id = $data['loan']['client_id'];
         $loan->amount = preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']);
         $loan->interest_rate = $data['loan']['interest_rate'];
@@ -41,6 +52,9 @@ class LoansController extends Controller
         $loan->quota_value = preg_replace('([^A-Za-z0-9])', '', $data['loan']['quota_value']);
         $loan->start_date = $data['loan']['start_date'];
         $loan->end_date = $data['loan']['end_date'];
+        if (Auth::user()->hasRole('Cobrador')) {
+            $loan->status = 3;
+        }
         $loan->total_pay = $total_pay;
         $loan->save();
         $loan->paymentPlans()->createMany($data["payment_plan"]);
@@ -63,7 +77,7 @@ class LoansController extends Controller
         $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $loan->portafolio_id = $request->portafolio_id;
-        $loan->user_id = 1;
+        $loan->user_id = Auth::user()->id;
         $loan->client_id = $request->client_id;
         $loan->amount = $request->amount;
         $loan->interest_rate = $request->interest_rate;
@@ -81,5 +95,19 @@ class LoansController extends Controller
         $loan = Loans::find($id);
         $loan->delete();
         return redirect()->route('loans')->with('status', 'Successfully delete loan');
+    }
+
+    public function loanPendients(){
+        $loans = Loans::where('status', 3)->get();
+        return view('loan.pendients', compact('loans'));
+    }
+
+    public function Approve($id){
+        $id = $this->decrypt($id);
+        $loan = Loans::find($id);
+        $loan->status = 1;
+        $loan->save();
+        return redirect()->route('pendientLoan')->with('status', 'Successfully approved loan');
+        
     }
 }

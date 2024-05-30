@@ -27,7 +27,7 @@ return new class extends Migration
             $table->decimal('quota_value', $precision = 10, $scale = 2);
             $table->decimal('total_pay', $precision = 10, $scale = 2);
             $table->integer('payment_method')->default(1)->comment('1 - Diario, 2 - Semanal, 3 - Quincenal, 4 - Mensual');
-            $table->integer('status')->default(1)->comment('1 - active, 2 - inactive');
+            $table->integer('status')->default(1)->comment('1 - active, 2 - inactive, 3 - pendient');
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

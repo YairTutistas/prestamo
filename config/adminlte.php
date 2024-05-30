@@ -394,6 +394,13 @@ return [
             'url' => 'payments',
             'can' => 'payments',
         ],
+        [
+            'text' => 'Pendient',
+            'icon' => 'fas fa-fw fa-donate',
+            'icon_color' => 'yellow',
+            'url' => 'pendientLoan',
+            'can' => 'payments',
+        ],
     ],
 
     /*

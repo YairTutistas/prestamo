@@ -74,7 +74,7 @@ class ClientsController extends Controller
     public function update($id, Request $request){
         $id = $this->decrypt($id);
         $client = Clients::find($id);
-        $client->user_id = 1;
+        $client->user_id = Auth::user()->id;
         $client->name = $request->name;
         $client->type_document = $request->type_document;
         $client->document = $request->document;

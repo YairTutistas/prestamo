@@ -43,6 +43,7 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -61,6 +62,7 @@ class User extends Authenticatable
 
     public function clients(){
         return $this->hasMany(Clients::class, 'user_id', 'id');
+
     }
 
     public function getLoansByPortafolio(){
@@ -68,7 +70,13 @@ class User extends Authenticatable
         if($this->hasRole("Cobrador")){
             return $this->through('portafoliosByDebtCollector')->has('loans');
         }
-
         return $this->through('portafolios')->has('loans');
+    }
+
+    public function getClientsByPortafolio(){
+        // dd($this->portafoliosByDebtCollector);
+        return $this->portafoliosByDebtCollector->map( function($portafolio){
+            dd($portafolio->getClientsByLoans);
+        });
     }
 }

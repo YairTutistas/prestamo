@@ -39,7 +39,7 @@ class PortafoliosController extends Controller
         $id = $this->decrypt($id);
         $portafolio = Portafolios::findOrFail($id);
         $portafolio->name = $request->name;
-        $portafolio->user_id = $request->user_id;
+        $portafolio->user_id = Auth::user()->id;
         $portafolio->save();
         return redirect()->route('portafolios')->with('status', 'Successfully updated portafolio');
     }
