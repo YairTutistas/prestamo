@@ -31,8 +31,6 @@
                     <th>{{$portafolio->id}}</th>
                     <th>{{$portafolio->name}}</th>
                     <th>{{$portafolio->getDebtCollector->name}}</th>
-                    <th>{{$portafolio->getDebtCollector->name}}</th>
-                    @dd($portafolio->getClient)
                     <th>
                         <a href="{{route('showPortafolio', Crypt::encryptString($portafolio->id))}}" class="btn btn-primary">Edit</a>
                     </th>

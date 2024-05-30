@@ -73,10 +73,21 @@ class User extends Authenticatable
         return $this->through('portafolios')->has('loans');
     }
 
+    // public function getClientsByPortafolio(){
+    //     // dd($this->portafoliosByDebtCollector);
+    //     return $this->portafoliosByDebtCollector->map( function($portafolio){
+    //         return $portafolio->getClientsByLoans;
+    //     })[0];
+    // }
+
+    /*
+     * This PHP code defines a method in the User class to retrieve clients associated with 
+     * a specific portafolio by using Laravel relationships.
+     */
     public function getClientsByPortafolio(){
-        // dd($this->portafoliosByDebtCollector);
-        return $this->portafoliosByDebtCollector->map( function($portafolio){
-            dd($portafolio->getClientsByLoans);
+        // f*king laravel relationships >:V...
+        return $this->through('portafoliosByDebtCollector')->has('loans')->get()->map(function($loan){
+            return $loan->client;
         });
     }
 }

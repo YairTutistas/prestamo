@@ -28,7 +28,6 @@ class LoansController extends Controller
             $user = Auth::user();
             $portafolios = $user->portafoliosByDebtCollector;
             $clients = $user->getClientsByPortafolio();
-            // dd($clients);
             return view('loan.create', compact('portafolios', 'clients'));
         }
 

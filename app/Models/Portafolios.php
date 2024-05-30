@@ -31,8 +31,10 @@ class Portafolios extends Model
         return $this->hasMany(Loans::class, 'portafolio_id', 'id');
     }
 
-    public function getClient(){
-        dd($this->hasManyThrough(Clients::class, Loans::class, 'client_id', 'portafolio_id'));
+    public function getClientsByLoans()
+    {
+        // f*king laravel relationships >:V...
+        return $this->belongsToMany(Clients::class, "loans", 'portafolio_id', 'client_id');
     }
 
 }
