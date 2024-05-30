@@ -110,4 +110,11 @@ class LoansController extends Controller
         return redirect()->route('pendientLoan')->with('status', 'Successfully approved loan');
         
     }
+
+    public function loanPendientCounter()
+    {
+        $counter = Auth::user()->getLoansByPortafolio->where('status', 3)->count();
+
+        return $counter;
+    }
 }

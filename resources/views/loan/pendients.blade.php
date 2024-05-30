@@ -81,8 +81,20 @@
     <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <!-- Initialize DataTables -->
     <script>
-    $(document).ready(function() {
-        $('#loans').DataTable();
-    });
+        const ACTIVATE_NOTIFICATIONS = true;
+        $(document).ready(function() {
+            $('#loans').DataTable();
+
+            if(ACTIVATE_NOTIFICATIONS){
+                document.querySelector("#payment_menu_id").children[0].children[1].children[0].innerHTML = '{{ $loans->count() }}';
+                setInterval(() => {
+                    fetch('{{ route("pendientCounter") }}').then(function(response){
+                        return response.json();
+                    }).then(function(data) {
+                        document.querySelector("#payment_menu_id").children[0].children[1].children[0].innerHTML = data;
+                    });
+                }, 10_000);
+            }
+        });
     </script>
 @endpush

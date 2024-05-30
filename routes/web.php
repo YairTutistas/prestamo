@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/updateLoan/{id}', [LoansController::class, 'update'])->name('updateLoan');
     Route::get('/approveLoan/{id}', [LoansController::class, 'Approve'])->name('approveLoan');
     Route::get('/pendientLoan', [LoansController::class, 'loanPendients'])->name('pendientLoan');
+    Route::get('/pendientCounter', [LoansController::class, 'loanPendientCounter'])->name('pendientCounter');
 
 
     // Payments

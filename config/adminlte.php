@@ -395,11 +395,14 @@ return [
             'can' => 'payments',
         ],
         [
+            'id' => 'payment_menu_id',
             'text' => 'Pendient',
             'icon' => 'fas fa-fw fa-donate',
             'icon_color' => 'yellow',
             'url' => 'pendientLoan',
             'can' => 'payments',
+            'label' => 4,
+            'label_color' => 'warning',
         ],
     ],
 
