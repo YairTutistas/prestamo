@@ -6,6 +6,7 @@ use App\Models\Loans;
 use App\Models\Payments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PaymentsController extends Controller
 {
@@ -53,5 +54,19 @@ class PaymentsController extends Controller
         $payment = Payments::find($id);
         $payment->delete();
         return redirect()->route('payments')->with('status', 'Successfully deleted payment.');
+    }
+
+    public function generateInvoice($payment_id)
+    {
+        $id = $this->decrypt($payment_id);
+        $payment = Payments::find($id);
+        $payment['logo'] = public_path('img/invoice/default_logo.png');
+
+        // $pdf = Pdf::loadView('templates.invoice.invoice', compact("payment"));
+        return Pdf::loadView('templates.invoice.invoice', compact("payment"))
+            // ->setPaper('a6')
+            ->setPaper(array(0,0,337, 402.5))
+            ->setWarnings(false)
+            ->stream('download.pdf');
     }
 }

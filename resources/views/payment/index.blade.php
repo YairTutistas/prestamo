@@ -40,6 +40,7 @@
                             @method('DELETE')
                             <button type="button" class="btn btn-danger btn-delete" data-id="{{ $payment->id }}">{{ __('Delete') }}</button>
                         </form>
+                        <a target="_blank" href="{{ route("generateInvoice", Crypt::encryptString($payment->id)) }}" class="btn btn-warning"><i class="fas fa-file-pdf"></i></a>
                     </th>
                     @endcan
                 </tr>

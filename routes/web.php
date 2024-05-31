@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/createPayment', [PaymentsController::class, 'create'])->name('createPayment');
     Route::post('/savePayment', [PaymentsController::class, 'save'])->name('savePayment');
     Route::get('/showPayment/{id}', [PaymentsController::class, 'show'])->name('showPayment');
+    Route::get('/generateInvoice/{id}', [PaymentsController::class, 'generateInvoice'])->name('generateInvoice');
 
 
     Route::group(['middleware' => ['role:Admin']], function () { 
