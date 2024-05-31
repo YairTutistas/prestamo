@@ -1,6 +1,6 @@
 @extends('welcome')
 
-@section('title', 'Loans')
+@section('title', 'Loans by clients')
 
 @section('content_header')
     <h1>{{__('Loans by clients')}}</h1>

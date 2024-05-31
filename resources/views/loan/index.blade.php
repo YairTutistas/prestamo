@@ -29,7 +29,9 @@
                 <th>{{__('Quota value')}}</th>
                 <th>{{__('Total to pay')}}</th>
                 <th>{{__('Start date')}}</th>
-                <th></th>
+                @can('updateLoan')
+                    <th></th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -60,14 +62,16 @@
                     <th>{{$loan->quota_value}}</th>
                     <th class="text-success">{{$loan->total_pay}}</th>
                     <th>{{$loan->start_date}}</th>
-                    <th>
-                        <a href="{{route('showLoan', Crypt::encryptString($loan->id))}}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('deleteLoan', Crypt::encryptString($loan->id)) }}" method="POST" id="delete-form-{{ $loan->id }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-danger btn-delete" data-id="{{ $loan->id }}">{{ __('Delete') }}</button>
-                        </form>
-                    </th>
+                    @can('updateLoan')
+                        <th>
+                            <a href="{{route('showLoan', Crypt::encryptString($loan->id))}}" class="btn btn-primary">Edit</a>
+                            <form action="{{ route('deleteLoan', Crypt::encryptString($loan->id)) }}" method="POST" id="delete-form-{{ $loan->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-delete" data-id="{{ $loan->id }}">{{ __('Delete') }}</button>
+                            </form>
+                        </th>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>
