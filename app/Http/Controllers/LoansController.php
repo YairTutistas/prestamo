@@ -96,9 +96,9 @@ class LoansController extends Controller
         return redirect()->route('loans')->with('status', 'Successfully delete loan');
     }
 
-    public function loanPendients(){
+    public function loanPending(){
         $loans = Auth::user()->getLoansByPortafolio->where('status', 3);
-        return view('loan.pendients', compact('loans'));
+        return view('loan.pending', compact('loans'));
     }
 
     public function Approve($id){
@@ -107,7 +107,7 @@ class LoansController extends Controller
         $loan->status = 1;
         $loan->user_id = Auth::user()->id;
         $loan->save();
-        return redirect()->route('pendientLoan')->with('status', 'Successfully approved loan');
+        return redirect()->route('pendingLoan')->with('status', 'Successfully approved loan');
         
     }
 }

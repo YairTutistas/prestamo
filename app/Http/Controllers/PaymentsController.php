@@ -48,11 +48,9 @@ class PaymentsController extends Controller
     }
 
     public function delete($id){
-        if (Auth::user()->hasRole('Admin')) {
-            $id = $this->decrypt($id);
-            $payment = Payments::find($id);
-            $payment->delete();
-            return redirect()->route('payments')->with('status', 'Successfully deleted payment.');
-        }
+        $id = $this->decrypt($id);
+        $payment = Payments::find($id);
+        $payment->delete();
+        return redirect()->route('payments')->with('status', 'Successfully deleted payment.');
     }
 }

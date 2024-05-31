@@ -43,6 +43,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'deleteLoan']);
         Permission::create(['name' => 'showLoan']);
         Permission::create(['name' => 'updateLoan']);
+        Permission::create(['name' => 'pendingLoan']);
 
 
         Permission::create(['name' => 'payments']);
@@ -79,13 +80,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'savePayment',
             'showPayment',
             'deletePayment',
+            'pendingLoan'
         ];
 
         // Crear roles y asignar permisos
         $roleCobrador = Role::create(['name' => 'Cobrador']);
         $roleCobrador->givePermissionTo('payments');
 
-        $roleMaster = Role::create(['name' => 'Master'])->syncPermissions($permissionAdmin);
+        $roleMaster = Role::create(['name' => 'Master'])->syncPermissions(Permission::all());
 
         $roleAdmin = Role::create(['name' => 'Admin'])->syncPermissions($permissionAdmin);
     }
