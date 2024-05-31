@@ -395,11 +395,18 @@ return [
             'can' => 'payments',
         ],
         [
+<<<<<<< HEAD
             'text' => 'Pending',
+=======
+            'id' => 'payment_menu_id',
+            'text' => 'Pendient',
+>>>>>>> 8a13b87f2aaf3d8603302fb6c4bc62a56848fe6d
             'icon' => 'fas fa-fw fa-donate',
             'icon_color' => 'yellow',
             'url' => 'pendingLoan',
             'can' => 'payments',
+            'label' => 4,
+            'label_color' => 'warning',
         ],
     ],
 
