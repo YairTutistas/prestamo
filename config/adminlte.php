@@ -63,9 +63,10 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>Ñeros</b> S.A',
+    'logo_img' => asset("img/logo/logo_min_white.png"),
     'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo_size' => 'max-height: 40px;',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',

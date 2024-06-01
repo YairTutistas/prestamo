@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="pending-counter-url" content="{{ route('pendientCounter') }}">
 
     {{-- Custom Meta Tags --}}
     @yield('meta_tags')
@@ -112,6 +113,7 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
+    <script src="{{ asset('js/countPending.js') }}"></script>
 </body>
 
 </html>

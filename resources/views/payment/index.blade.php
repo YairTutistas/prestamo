@@ -31,7 +31,7 @@
             @foreach ($payments as $payment)
                 <tr>
                     <th>{{$payment->loan->client->name}}</th>
-                    <th>{{$payment->amount}}</th>
+                    <th>@moneyformat($payment->amount)</th>
                     <th>{{$payment->payment_date}}</th>
                     @can('deletePayment')
                     <th>

@@ -4,8 +4,6 @@
 
 @section('content_header')
     <h1>{{__('Loans')}}</h1>
-    <meta name="loan-count" content="{{ $loans->count() }}">
-    <meta name="pending-counter-url" content="{{ route('pendientCounter') }}">
 @stop
 
 @section('content')
