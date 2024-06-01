@@ -110,15 +110,15 @@
 							<tr>
 								<td class="title">
 									<img
-										src="{{ $payment['logo'] }}"
+										src="{{ $payment->logo }}"
 										style="width: 100%; max-width: 125px"
 									/>
 								</td>
 
 								<td>
-									Factura #: 123<br />
-									Generada: Enero 1, 2024<br />
-									Pagada: Enero 1, 2024
+									Factura #: {{ $payment->id }}<br />
+									Generada: {{ date("Y-m-d") }}<br />
+									Pagada: {{ $payment->payment_date }}
 								</td>
 							</tr>
 						</table>
@@ -136,14 +136,14 @@
 								<td>
 									Cobradores S.A<br />
 									<!-- Calle siempre viva 123<br /> -->
-									Yair Andres<br />
+									{{ $payment->loan->portafolio->getDebtCollector->name }}<br />
 									Cali, Colombia
 								</td>
 
 								<td>
-									Sakarias Piedras del Rio<br />
-									3245566778.<br />
-									sakarias@correo.com
+									{{ $payment->loan->client->name }}<br />
+									{{ $payment->loan->client->phone }}<br />
+									{{ $payment->loan->client->email }}
 								</td>
 							</tr>
 						</table>
@@ -173,13 +173,13 @@
 				<tr class="item">
 					<td>Cuota Prestamo</td>
 
-					<td>$110,000.00</td>
+					<td>@moneyformat($payment->amount)</td>
 				</tr>
 
 				<tr class="total">
 					<td></td>
 
-					<td>Total: $110,000.00</td>
+					<td>Total: @moneyformat($payment->amount)</td>
 				</tr>
 			</table>
 		</div>

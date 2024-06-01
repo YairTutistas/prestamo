@@ -60,7 +60,9 @@ class PaymentsController extends Controller
     {
         $id = $this->decrypt($payment_id);
         $payment = Payments::find($id);
-        $payment['logo'] = public_path('img/invoice/default_logo.png');
+        $payment->logo = public_path('img/invoice/default_logo.png');
+
+        // dd($payment, Cashier::formatAmount(4200));
 
         // $pdf = Pdf::loadView('templates.invoice.invoice', compact("payment"));
         return Pdf::loadView('templates.invoice.invoice', compact("payment"))

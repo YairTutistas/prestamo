@@ -35,12 +35,14 @@
                     <th>{{$payment->payment_date}}</th>
                     @can('deletePayment')
                     <th>
-                        <form action="{{ route('deletePayment', Crypt::encryptString($payment->id)) }}" method="POST" id="delete-form-{{ $payment->id }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-danger btn-delete" data-id="{{ $payment->id }}">{{ __('Delete') }}</button>
-                        </form>
-                        <a target="_blank" href="{{ route("generateInvoice", Crypt::encryptString($payment->id)) }}" class="btn btn-warning"><i class="fas fa-file-pdf"></i></a>
+                        <div class="row">
+                            <form action="{{ route('deletePayment', Crypt::encryptString($payment->id)) }}" method="POST" id="delete-form-{{ $payment->id }}">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            <button type="submit" class="btn btn-danger mr-1" data-id="{{ $payment->id }}" form="delete-form-{{ $payment->id }}"><i class="fas fa-trash-alt"></i></button>
+                            <a target="_blank" class="btn btn-warning mr-1" href="{{ route("generateInvoice", Crypt::encryptString($payment->id)) }}"><i class="fas fa-file-pdf"></i></a>
+                        </div>
                     </th>
                     @endcan
                 </tr>
