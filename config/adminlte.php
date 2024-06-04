@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>Ñeros</b> S.A',
-    'logo_img' => asset("img/logo/logo_min_white.png"),
+    'logo_img' => "img/logo/logo_min_white.png",
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_size' => 'max-height: 40px;',
     'logo_img_xl' => null,
@@ -330,44 +330,12 @@ return [
             'url' => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
-        // [
-        //     'text' => 'multilevel',
-        //     'icon' => 'fas fa-fw fa-share',
-        //     'submenu' => [
-        //         [
-        //             'text' => 'level_one',
-        //             'url' => '#',
-        //         ],
-        //         [
-        //             'text' => 'level_one',
-        //             'url' => '#',
-        //             'submenu' => [
-        //                 [
-        //                     'text' => 'level_two',
-        //                     'url' => '#',
-        //                 ],
-        //                 [
-        //                     'text' => 'level_two',
-        //                     'url' => '#',
-        //                     'submenu' => [
-        //                         [
-        //                             'text' => 'level_three',
-        //                             'url' => '#',
-        //                         ],
-        //                         [
-        //                             'text' => 'level_three',
-        //                             'url' => '#',
-        //                         ],
-        //                     ],
-        //                 ],
-        //             ],
-        //         ],
-        //         [
-        //             'text' => 'level_one',
-        //             'url' => '#',
-        //         ],
-        //     ],
-        // ],
+        [
+            'text' => 'Users',
+            'url' => 'users',
+            'icon' => 'fas fa-fw fa-users',
+            // 'can' => 'user'
+        ],
         ['header' => 'labels'],
         [
             'text' => 'Clients',
@@ -404,6 +372,7 @@ return [
             'can' => 'payments',
             'label' => 0,
             'label_color' => 'warning',
+            'can' => 'pendingLoan',
         ],
     ],
 

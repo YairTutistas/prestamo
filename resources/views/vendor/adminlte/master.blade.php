@@ -113,7 +113,9 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
-    <script src="{{ asset('js/countPending.js') }}"></script>
+    @if(Auth::check() && Auth::user()->hasAnyRole('Admin'))
+        <script src="{{ asset('js/countPending.js') }}"></script>
+    @endif
 </body>
 
 </html>

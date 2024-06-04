@@ -13,7 +13,6 @@ class PaymentsController extends Controller
     public function index(){
         $payments = Auth::user()->getPaymentsByPortafolio();
         // dd($payments);
-        // dd(config('adminlte.menu.4'));
         return view('payment.index', compact('payments'));
     }
 

@@ -64,12 +64,18 @@
                     <th>{{$loan->start_date}}</th>
                     @can('updateLoan')
                         <th>
-                            <a href="{{route('showLoan', Crypt::encryptString($loan->id))}}" class="btn btn-primary">Edit</a>
-                            <form action="{{ route('deleteLoan', Crypt::encryptString($loan->id)) }}" method="POST" id="delete-form-{{ $loan->id }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="btn btn-danger btn-delete" data-id="{{ $loan->id }}">{{ __('Delete') }}</button>
-                            </form>
+                            <div class="col">
+                                <a href="{{route('showLoan', Crypt::encryptString($loan->id))}}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('deleteLoan', Crypt::encryptString($loan->id)) }}" method="POST" id="delete-form-{{ $loan->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger btn-delete" data-id="{{ $loan->id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </th>
                     @endcan
                 </tr>

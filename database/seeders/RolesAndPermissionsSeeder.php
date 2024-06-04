@@ -80,12 +80,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'savePayment',
             'showPayment',
             'deletePayment',
-            'pendingLoan'
+            'pendingLoan',
+        ];
+
+        $permissionCollector = [
+            'payments',
+            'saveLoan'
         ];
 
         // Crear roles y asignar permisos
-        $roleCobrador = Role::create(['name' => 'Cobrador']);
-        $roleCobrador->givePermissionTo('payments');
+        $roleCobrador = Role::create(['name' => 'Cobrador'])->syncPermissions($permissionCollector);
 
         $roleMaster = Role::create(['name' => 'Master'])->syncPermissions(Permission::all());
 

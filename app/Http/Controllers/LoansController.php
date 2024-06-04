@@ -21,6 +21,9 @@ class LoansController extends Controller
         if (Auth::user()->hasAnyRole('Admin')) {
             $user = Auth::user();
             $portafolios = $user->portafolios;
+            if (!count($portafolios)) {
+                return redirect()->route('loans')->with('status', 'No portafolios was found');
+            }
             $clients = $user->clients;
             return view('loan.create', compact('portafolios', 'clients'));
             

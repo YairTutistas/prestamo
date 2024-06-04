@@ -57,4 +57,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
+    Route::group(['middleware' => ['role:Master']], function () { 
+        Route::get('/users', [RegisteredUserController::class, 'index'])->name('users');
+
+    });
 });

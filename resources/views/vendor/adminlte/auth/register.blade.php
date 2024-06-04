@@ -52,6 +52,15 @@
                 </span>
             @enderror
         </div>
+        {{-- Role field --}}
+        <div class="input-group mb-3">
+            <select name="rol" id="rol" class="form-control">
+                <option value="">Select rol</option>
+                @foreach ($roles as $rol)
+                    <option value="{{$rol->name}}">{{$rol->name}}</option>
+                @endforeach
+            </select>
+        </div>
 
         {{-- Password field --}}
         <div class="input-group mb-3">
