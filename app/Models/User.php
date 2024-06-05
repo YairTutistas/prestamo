@@ -79,7 +79,7 @@ class User extends Authenticatable
             }
         });
 
-        // Obtén todos los prestamos a través de los portafolios
+        /// Obtén todos los prestamos a través de los portafolios
         return $portafolios->flatMap(function($portafolio) {
             return $portafolio->loans;
         });
