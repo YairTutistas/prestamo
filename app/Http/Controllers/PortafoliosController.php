@@ -10,20 +10,22 @@ use Illuminate\Support\Facades\Auth;
 class PortafoliosController extends Controller
 {
     public function index(){
-        $portafolios = Auth::user()->portafolios;
+        $portafolios = Auth::user()->getPortafoliosByCompany();
         return view('portafolio.index', compact('portafolios'));
     }
 
     public function create(){
+        $companys = Auth::user()->companies;
         $userRol = User::role('Cobrador')->get();
-        return view('portafolio.create', compact('userRol'));
+        return view('portafolio.create', compact('userRol', 'companys'));
     }
     public function save(Request $request){
-        // $data = $request->all();
+        $company_id = $this->decrypt($request->company_id);
+        $debt_collector = $this->decrypt($request->debt_collector);
         $portafolio = new Portafolios();
         $portafolio->name = $request->name;
-        $portafolio->user_id = Auth::user()->id;
-        $portafolio->debt_collector = $request->debt_collector;
+        $portafolio->company_id = $company_id;
+        $portafolio->debt_collector = $debt_collector;
         $portafolio->save();
         return redirect()->route('portafolios')->with('status', 'Successfully created portafolio');
     }
@@ -31,15 +33,18 @@ class PortafoliosController extends Controller
     public function show($id){
         $id = $this->decrypt($id);
         $portafolio = Portafolios::findOrFail($id);
+        $companys = Auth::user()->companies;
         $users = User::all();
-        return view('portafolio.show', compact('portafolio', 'users'));
+        return view('portafolio.show', compact('portafolio', 'users', 'companys'));
     }
 
     public function update($id, Request $request){
         $id = $this->decrypt($id);
+        $company_id = $this->decrypt($request->company_id);
+        $debt_collector = $this->decrypt($request->debt_collector);
         $portafolio = Portafolios::findOrFail($id);
         $portafolio->name = $request->name;
-        $portafolio->user_id = Auth::user()->id;
+        $portafolio->company_id = $company_id;
         $portafolio->save();
         return redirect()->route('portafolios')->with('status', 'Successfully updated portafolio');
     }

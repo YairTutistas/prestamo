@@ -14,10 +14,22 @@
                 <input type="text" name="name" id="name" placeholder="Name" value="{{$portafolio->name}}" class="form-control" required>
             </div>
             <div class="col-md-12 mt-3">
-                <label for="user">{{ __('User') }}</label>
-                <select name="user_id" id="user" class="form-control" required>
+                <label for="debt_collector">{{ __('debt_collector') }}</label>
+                <select name="debt_collector" id="debt_collector" class="form-control" required>
                     @foreach ($users as $user)
-                        <option value="{{$user->id}}">{{$user->name}}</option>
+                        <option value="{{Crypt::encryptString($user->id)}}" {{ $user->id == $portafolio->debt_collector ? 'selected' : '' }}>
+                            {{$user->name}}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-12 mt-3">
+                <label for="company">{{ __('Company') }}</label>
+                <select name="company_id" id="company" class="form-control" required>
+                    @foreach ($companys as $company)
+                        <option value="{{Crypt::encryptString($company->id)}}" {{ $company->id == $portafolio->company_id ? 'selected' : '' }}>
+                            {{$company->name}}
+                        </option>
                     @endforeach
                 </select>
             </div>

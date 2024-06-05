@@ -12,7 +12,7 @@ use App\Http\Controllers\PortafolioClientController;
 class LoansController extends Controller
 {
     public function index() {
-        $loans = Auth::user()->loans;
+        $loans = Auth::user()->getLoansByCompany();
         return view('loan.index', compact('loans'));
     }
 
@@ -20,12 +20,13 @@ class LoansController extends Controller
 
         if (Auth::user()->hasAnyRole('Admin')) {
             $user = Auth::user();
-            $portafolios = $user->portafolios;
+            $portafolios = $user->getPortafoliosByCompany();
             if (!count($portafolios)) {
                 return redirect()->route('loans')->with('status', 'No portafolios was found');
             }
-            $clients = $user->clients;
-            return view('loan.create', compact('portafolios', 'clients'));
+            $clients = $user->getClientByCompany();
+            $companys = $user->companies;
+            return view('loan.create', compact('portafolios', 'clients', 'companys'));
             
         } elseif (Auth::user()->hasAnyRole('Cobrador')){
             $user = Auth::user();
@@ -38,6 +39,8 @@ class LoansController extends Controller
 
     public function save(Request $request) {
         $data = $request->all();
+        $client_id = $this->decrypt($data['loan']['client_id']);
+        $company_id = $this->decrypt($data['loan']['company_id']);
         // Sacar porcentaje
         $percentage = (preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']) * $data['loan']['interest_rate']) / 100;
         // Generar total a pagar
@@ -45,8 +48,8 @@ class LoansController extends Controller
 
         $loan = new Loans();
         $loan->portafolio_id = $data['loan']['portafolio_id'];
-        $loan->user_id = Auth::user()->id;
-        $loan->client_id = $data['loan']['client_id'];
+        $loan->company_id = $company_id;
+        $loan->client_id = $client_id;
         $loan->amount = preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']);
         $loan->interest_rate = $data['loan']['interest_rate'];
         $loan->deadlines = $data['loan']['deadlines'];
@@ -69,18 +72,23 @@ class LoansController extends Controller
     }
 
     public function show($id) {
+        $companys = Auth::user()->companies;
         $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $portafolios = Portafolios::all();
-        return view('loan.edit', compact('loan', 'portafolios'));
+        return view('loan.edit', compact('loan', 'portafolios','companys'));
     }
 
     public function update($id, Request $request) {
+        // dd($request);
         $id = $this->decrypt($id);
+        $portafolio_id = $this->decrypt($request->portafolio_id);
+        $client_id = $this->decrypt($request->client_id);
+        $company_id = $this->decrypt($request->company_id);
         $loan = Loans::find($id);
-        $loan->portafolio_id = $request->portafolio_id;
-        $loan->user_id = Auth::user()->id;
-        $loan->client_id = $request->client_id;
+        $loan->portafolio_id = $portafolio_id;
+        $loan->company_id = $company_id;
+        $loan->client_id = $client_id;
         $loan->amount = $request->amount;
         $loan->interest_rate = $request->interest_rate;
         $loan->deadlines = $request->deadlines;
@@ -100,7 +108,7 @@ class LoansController extends Controller
     }
 
     public function loanPending(){
-        $loans = Auth::user()->getLoansByPortafolio->where('status', 3);
+        $loans = Auth::user()->getLoansByPortafolio()->where('status', 3);
         return view('loan.pending', compact('loans'));
     }
 
@@ -116,7 +124,7 @@ class LoansController extends Controller
 
     public function loanPendientCounter()
     {
-        $counter = Auth::user()->getLoansByPortafolio->where('status', 3)->count();
+        $counter = Auth::user()->getLoansByPortafolio()->where('status', 3)->count();
 
         return $counter;
     }

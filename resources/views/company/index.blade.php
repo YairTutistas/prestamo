@@ -1,33 +1,35 @@
 @extends('welcome')
 
-@section('title', 'Users')
+@section('title', 'Companys')
 
 @section('content_header')
-    <h1>{{__('Users')}}</h1>
+    <h1>{{__('Companys')}}</h1>
 @stop
 
 @section('content')
 <div class="container">
     <div class="col-12 d-flex justify-content-end">
-        <a href="{{route('register')}}" class="btn btn-secondary mb-5">{{__('Create')}}</a>
+        <a href="{{route('createCompany')}}" class="btn btn-secondary mb-5">{{__('Create')}}</a>
     </div>
     @if (session('status'))
         <div class="alert alert-success">
             {{ session('status') }}
         </div>
     @endif
-    <table id="users" class="table table-striped table-bordered" style="width:100%">
+    <table id="company" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>{{__('Username')}}</th>
-                <th>{{__('Email')}}</th>
+                <th>{{__('Name')}}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
+            @foreach ($companies as $company)
                 <tr>
-                    <th>{{$user->name}}</th>
-                    <th>{{$user->email}}</th>
+                    <th>{{$company->name}}</th>
+                    <th class="col-md-1">
+                        <a target="_blank" class="btn btn-primary mr-1" href="{{ route("generateInvoice", Crypt::encryptString($company->id)) }}"><i class="fas fa-edit"></i></a>
+                    </th>
                 </tr>
             @endforeach
         </tbody>
@@ -47,7 +49,7 @@
     <!-- Initialize DataTables -->
     <script>
     $(document).ready(function() {
-        $('#users').DataTable();
+        $('#company').DataTable();
     });
     </script>
 @endpush

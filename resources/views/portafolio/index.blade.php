@@ -21,7 +21,8 @@
             <tr>
                 <th>{{__('#')}}</th>
                 <th>{{__('Name')}}</th>
-                <th>{{__('User')}}</th>
+                <th>{{__('Debt collector')}}</th>
+                <th>{{__('Company')}}</th>
                 <th></th>
             </tr>
         </thead>
@@ -31,6 +32,7 @@
                     <th>{{$portafolio->id}}</th>
                     <th>{{$portafolio->name}}</th>
                     <th>{{$portafolio->getDebtCollector->name}}</th>
+                    <th>{{$portafolio->company->name}}</th>
                     <th>
                         <a href="{{route('showPortafolio', Crypt::encryptString($portafolio->id))}}" class="btn btn-primary">Edit</a>
                     </th>

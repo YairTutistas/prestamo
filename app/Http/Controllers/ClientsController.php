@@ -34,17 +34,19 @@ class ClientsController extends Controller
     }
     public function indexAdmin(){
         $user = Auth::user();
-        $clients = $user->clients;
+        // dd($user->getClientByCompany());
+        $clients = $user->getClientByCompany();
         return view('client.index', compact('clients'));
     }
 
     public  function create(){
-        return view('client.create');
+        $companys = Auth::user()->company;
+        return view('client.create', compact('companys'));
     }
     public  function save(Request $request){
-        // $data = $request->all();
+        $company_id = $this->decrypt($request->company_id);
         $client = new Clients();
-        $client->user_id = Auth::user()->id;
+        $client->company_id = $company_id;
         $client->name = $request->name;
         $client->type_document = $request->type_document;
         $client->document = $request->document;
@@ -60,6 +62,7 @@ class ClientsController extends Controller
 
     public function show($id){
         $id = $this->decrypt($id);
+        $companys = Auth::user()->companies;
         $client = Clients::findOrFail($id);
         $payments = Loans::join('clients', 'loans.client_id', '=', 'clients.id')
         ->join('payments', 'loans.id', '=', 'payments.loan_id')
@@ -68,13 +71,14 @@ class ClientsController extends Controller
         ->orderBy('loans.id')
         ->get();
 
-        return view('client.view', compact('client', 'payments'));
+        return view('client.view', compact('client', 'payments', 'companys'));
     }
 
     public function update($id, Request $request){
+        $company_id = $this->decrypt($request->company_id);
         $id = $this->decrypt($id);
         $client = Clients::find($id);
-        $client->user_id = Auth::user()->id;
+        $client->company_id = $company_id;
         $client->name = $request->name;
         $client->type_document = $request->type_document;
         $client->document = $request->document;

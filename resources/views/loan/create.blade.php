@@ -17,11 +17,19 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-6 mt-3">
                 <label for="client">{{ __('Client') }}</label>
                 <select name="loan[client_id]" id="client" class="form-control" required>
                     @foreach ($clients as $client)
-                        <option value="{{ $client->id }}">{{ $client->name }}</option>
+                        <option value="{{ Crypt::encryptString($client->id) }}">{{ $client->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6 mt-3">
+                <label for="company" >{{ __('Company') }}</label>
+                <select name="loan[company_id]" id="company" class="form-control" required>
+                    @foreach ($companys as $company)
+                        <option value="{{ Crypt::encryptString($company->id) }}">{{ $company->name }}</option>
                     @endforeach
                 </select>
             </div>

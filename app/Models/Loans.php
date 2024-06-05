@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Clients;
 use App\Models\Payments;
+use App\Models\Companies;
 use App\Models\Portafolios;
 use App\Models\Payment_plans;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Loans extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'portafolio_id',
-        'user_id',
+        'company_id',
         'client_id',
         'amount',
         'payment_method',
@@ -32,8 +33,8 @@ class Loans extends Model
         return $this->belongsTo(Clients::class);
     }
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function company(){
+        return $this->belongsTo(Companies::class);
     }
 
     public function payments(){

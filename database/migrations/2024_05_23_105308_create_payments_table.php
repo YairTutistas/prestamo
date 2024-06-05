@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->decimal('amount', $precision = 10, $scale = 2);
             $table->date('payment_date');
+            $table->softDeletes(); // Columna deleted_at
             $table->timestamps();
         });
     }

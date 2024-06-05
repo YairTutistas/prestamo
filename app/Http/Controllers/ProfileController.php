@@ -17,17 +17,8 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        dd($request);
         return view('profile.edit', [
             'user' => $request->user(),
-        ]);
-    }
-
-    public function editUser($id): View
-    {
-        $id = $this->decrypt($id);
-        return view('profile.edit', [
-            'user' => User::find($id),
         ]);
     }
 

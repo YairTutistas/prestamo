@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-    
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->string('name');
             $table->string('type_document');
             $table->string('document');
@@ -28,6 +27,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('neighborhood')->nullable();
             $table->integer('status')->default(1)->comment('1 - active, 2 - inactive');
+            $table->softDeletes(); // Columna deleted_at
             $table->timestamps();
         });
     }

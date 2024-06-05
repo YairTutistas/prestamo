@@ -1,16 +1,18 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Models\Clients;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\LoansController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\PortafoliosController;
-use App\Models\Clients;
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +35,6 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profile/{id}', [ProfileController::class, 'editUser'])->name('editUser');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -80,6 +81,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/savePayment', [PaymentsController::class, 'save'])->name('savePayment');
     Route::get('/showPayment/{id}', [PaymentsController::class, 'show'])->name('showPayment');
     Route::get('/generateInvoice/{id}', [PaymentsController::class, 'generateInvoice'])->name('generateInvoice');
+
+    // Companies
+    Route::get('/company', [CompaniesController::class, 'index'])->name('company');
+    Route::get('/createCompany', [CompaniesController::class, 'create'])->name('createCompany');
+    Route::post('/saveCompany', [CompaniesController::class, 'store'])->name('saveCompany');
+
 
 
     Route::group(['middleware' => ['role:Admin']], function () { 

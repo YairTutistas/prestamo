@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('portafolios', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('debt_collector');
-            $table->foreign('debt_collector')->references('id')->on('users');
-            $table->softDeletes(); // Columna deleted_at
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes(); // Agregar eliminación lógica
             $table->timestamps();
+
         });
     }
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Portafolios');
+        Schema::dropIfExists('companies');
     }
 };

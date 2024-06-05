@@ -4,18 +4,20 @@ namespace App\Models;
 
 use App\Models\Loans;
 use App\Models\Clients;
+use App\Models\Companies;
 use App\Models\Portafolios;
 use Laravel\Sanctum\HasApiTokens;
 use Database\Factories\UserFactory;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -48,7 +50,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function portafolios(){
+    public function companies(){
+        return $this->hasMany(Companies::class, 'user_id', 'id');
+    }
+
+    public function portafolios()
+    {
         return $this->hasMany(Portafolios::class);
     }
 
@@ -56,29 +63,27 @@ class User extends Authenticatable
         return $this->hasMany(Portafolios::class, 'debt_collector', 'id');
     }
 
-    public function loans(){
-        return $this->hasMany(Loans::class, 'user_id', 'id');
-    }
-
-    public function clients(){
-        return $this->hasMany(Clients::class, 'user_id', 'id');
-
-    }
-
     public function getLoansByPortafolio(){
-        // Devuelve todos los prestamos relacionado a la cartera de un usuario, solo si se tiene la relaciones creadas.
-        if($this->hasRole("Cobrador")){
-            return $this->through('portafoliosByDebtCollector')->has('loans');
-        }
-        return $this->through('portafolios')->has('loans');
-    }
+        
+        // Obtener todas las compañías del usuario
+        $companies = $this->companies()->with(['portafolios.loans.payments'])->get();
 
-    // public function getClientsByPortafolio(){
-    //     // dd($this->portafoliosByDebtCollector);
-    //     return $this->portafoliosByDebtCollector->map( function($portafolio){
-    //         return $portafolio->getClientsByLoans;
-    //     })[0];
-    // }
+        // Recopilar todos los portafolios dependiendo del rol del usuario
+        $portafolios = $companies->flatMap(function($company) {
+            if ($this->hasRole("Cobrador")) {
+                // Si es cobrador, obtener los portafolios asignados al cobrador dentro de la compañía
+                return $company->portafolios->where('debt_collector', $this->id);
+            } else {
+                // Si no es cobrador, obtener todos los portafolios de la compañía
+                return $company->portafolios;
+            }
+        });
+
+        // Obtén todos los pagos a través de los portafolios y préstamos
+        return $portafolios->flatMap(function($portafolio) {
+            return $portafolio->loans;
+        });
+    }
 
     /*
      * This PHP code defines a method in the User class to retrieve clients associated with 
@@ -91,14 +96,47 @@ class User extends Authenticatable
         });
     }
     
-    public function getPaymentsByPortafolio(){
-        if($this->hasRole("Cobrador")){
-            return $this->through('portafoliosByDebtCollector')->has('loans')->get()->map(function($loan){
+    public function getPaymentsByPortafolio()
+    {
+        // Obtener todas las compañías del usuario
+        $companies = $this->companies()->with(['portafolios.loans.payments'])->get();
+
+        // Recopilar todos los portafolios dependiendo del rol del usuario
+        $portafolios = $companies->flatMap(function($company) {
+            if ($this->hasRole("Cobrador")) {
+                // Si es cobrador, obtener los portafolios asignados al cobrador dentro de la compañía
+                return $company->portafolios->where('debt_collector', $this->id);
+            } else {
+                // Si no es cobrador, obtener todos los portafolios de la compañía
+                return $company->portafolios;
+            }
+        });
+
+        // Obtén todos los pagos a través de los portafolios y préstamos
+        return $portafolios->flatMap(function($portafolio) {
+            return $portafolio->loans->flatMap(function($loan) {
                 return $loan->payments;
-            })->flatten();
-        }
-        return $this->through('portafolios')->has('loans')->get()->map(function($loan){
-            return $loan->payments;
+            });
+        });
+    }
+
+    public function getClientByCompany()
+    {
+        return $this->through('companies')->has('clients')->get()->map(function($client){
+            return $client;
+        })->flatten();
+    }
+
+    public function getPortafoliosByCompany()
+    {
+        return $this->through('companies')->has('portafolios')->get()->map(function($portafolio){
+            return $portafolio;
+        })->flatten();
+    }
+    public function getLoansByCompany()
+    {
+        return $this->through('companies')->has('loans')->get()->map(function($loan){
+            return $loan;
         })->flatten();
     }
 }

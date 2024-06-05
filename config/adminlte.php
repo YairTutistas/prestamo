@@ -338,6 +338,12 @@ return [
         ],
         ['header' => 'labels'],
         [
+            'text' => 'Company',
+            'icon' => 'fas fa-fw fa-building',
+            'icon_color' => 'white',
+            'url' => 'company',
+        ],
+        [
             'text' => 'Clients',
             'icon' => 'fas fa-fw fa-user',
             'icon_color' => 'white',

@@ -18,7 +18,7 @@ class PaymentsController extends Controller
 
     public function create(){
         $user = Auth::user();
-        $loans = $user->getLoansByPortafolio;
+        $loans = $user->getLoansByPortafolio();
         return view('payment.create', compact('loans'));
     }
 

@@ -13,12 +13,12 @@
     <div class="container">
         <form action="{{ route('updateClient', Crypt::encryptString($client->id)) }}" method="POST" class="row g-3">
             @csrf
-            <div class="mb-3 col-md-12">
+            <div class="mt-3 col-md-12">
                 <label for="name" class="form-label">{{ __('Name') }}</label>
                 <input type="text" name="name" class="form-control" id="name" value="{{ $client->name }}"
                     required>
             </div>
-            <div class="mb-3 col-md-6">
+            <div class="mt-3 col-md-6">
                 <label for="typeDocument" class="form-label">{{ __('Type document') }}</label>
                 <select name="type_document" id="typeDocument" class="form-control" required>
                     <option value="">{{ __('Select a type') }}</option>
@@ -38,35 +38,45 @@
                     </option>
                 </select>
             </div>
-            <div class="mb-3 col-md-6">
+            <div class="mt-3 col-md-6">
                 <label for="document" class="form-label">{{ __('Document') }}</label>
                 <input type="text" name="document" class="form-control" id="Document" value="{{ $client->document }}"
                     required>
             </div>
-            <div class="mb-3 col-md-6">
+            <div class="mt-3 col-md-6">
                 <label for="phone" class="form-label">{{ __('Phone') }}</label>
                 <input type="text" name="phone" class="form-control" id="phone" value="{{ $client->phone }}"
                     required>
             </div>
-            <div class="mb-3 col-md-6">
+            <div class="mt-3 col-md-6">
                 <label for="email" class="form-label">{{ __('Email') }}</label>
                 <input type="email" name="email" class="form-control" id="email" value="{{ $client->email }}">
             </div>
-            <div class="mb-3 col-md-4">
+            <div class="mt-3 col-md-4">
                 <label for="Address" class="form-label">{{ __('Addresses') }}</label>
                 <input type="text" name="addresses" class="form-control" name="addresses" id="Address"
                     value="{{ $client->addresses }}">
             </div>
-            <div class="mb-3 col-md-4">
+            <div class="mt-3 col-md-4">
                 <label for="inputCity" class="form-label">{{ __('City') }}</label>
                 <input type="text" name="city" class="form-control" id="inputCity" value="{{ $client->city }}">
             </div>
-            <div class="mb-5 col-md-4">
+            <div class="mt-3 col-md-4">
                 <label for="neigborhood" class="form-label">{{ __('Neigborhood') }}</label>
                 <input type="text" name="neigborhood" class="form-control" id="neigborhood"
                     value="{{ $client->neigborhood }}">
             </div>
-            <button class="btn btn-primary form-control">{{ __('Actualizar') }}</button>
+            <div class="mt-3 col-md-12">
+                <label for="company">Company</label>
+                <select name="company_id" id="company" class="form-control">
+                    @foreach ($companys as $company)
+                    <option value="{{Crypt::encryptString($company->id)}}" {{ $company->id == $client->company_id ? 'selected' : '' }}>
+                        {{ $company->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+            <button class="btn btn-primary form-control mt-3">{{ __('Update') }}</button>
         </form>
         <hr>
         <h3>{{ __('payment information') }}</h3>
