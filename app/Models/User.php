@@ -79,7 +79,7 @@ class User extends Authenticatable
             }
         });
 
-        // Obtén todos los pagos a través de los portafolios y préstamos
+        // Obtén todos los prestamos a través de los portafolios
         return $portafolios->flatMap(function($portafolio) {
             return $portafolio->loans;
         });
@@ -119,24 +119,37 @@ class User extends Authenticatable
             });
         });
     }
-
+    // Funcion para traer los clientes segun la compañia del usuario
     public function getClientByCompany()
     {
-        return $this->through('companies')->has('clients')->get()->map(function($client){
-            return $client;
-        })->flatten();
-    }
+        // Obtener todas las compañías del usuario con los clientes cargados
+        $companies = $this->companies()->with('clients')->get();
 
+        // Recopilar todos los clientes a través de las compañías
+        return $companies->flatMap(function($company) {
+            return $company->clients;
+        });
+    }
+    // Funcion para traer los portafolios segun la compañia del usuario
     public function getPortafoliosByCompany()
     {
-        return $this->through('companies')->has('portafolios')->get()->map(function($portafolio){
-            return $portafolio;
-        })->flatten();
+        // Obtener todas las compañías del usuario con los portafolios cargados
+        $companies = $this->companies()->with('portafolios')->get();
+
+        // Recopilar todos los portafolios a través de las compañías
+        return $companies->flatMap(function($company) {
+            return $company->portafolios;
+        });
     }
+    // Funcion para traer los prestamos (loans) segun la compañia del usuario
     public function getLoansByCompany()
     {
-        return $this->through('companies')->has('loans')->get()->map(function($loan){
-            return $loan;
-        })->flatten();
+        // Obtener todas las compañías del usuario con los préstamos cargados
+        $companies = $this->companies()->with('loans')->get();
+
+        // Recopilar todos los préstamos a través de las compañías
+        return $companies->flatMap(function($company) {
+            return $company->loans;
+        });
     }
 }
