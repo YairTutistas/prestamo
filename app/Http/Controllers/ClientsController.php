@@ -29,7 +29,7 @@ class ClientsController extends Controller
         // ->get();
 
         // Traer toda los prestamos con relaciones eloquent
-        $loans = Auth::user()->getLoansByPortafolio->where('status', 1);
+        $loans = Auth::user()->getLoansByPortafolio()->where('status', 1);
         return view('cobrador.index', compact('loans'));
     }
     public function indexAdmin(){

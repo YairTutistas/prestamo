@@ -12,7 +12,7 @@ use App\Http\Controllers\PortafolioClientController;
 class LoansController extends Controller
 {
     public function index() {
-        $loans = Auth::user()->getLoansByCompany();
+        $loans = Auth::user()->getLoansByCompany()->where('status', 1);
         return view('loan.index', compact('loans'));
     }
 
@@ -31,8 +31,9 @@ class LoansController extends Controller
         } elseif (Auth::user()->hasAnyRole('Cobrador')){
             $user = Auth::user();
             $portafolios = $user->portafoliosByDebtCollector;
+            $companys = $user->getCompaniesAsDebtCollector();
             $clients = $user->getClientsByPortafolio();
-            return view('loan.create', compact('portafolios', 'clients'));
+            return view('loan.create', compact('portafolios', 'clients','companys'));
         }
 
     }

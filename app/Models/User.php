@@ -63,10 +63,20 @@ class User extends Authenticatable
         return $this->hasMany(Portafolios::class, 'debt_collector', 'id');
     }
 
+    public function getCompaniesAsDebtCollector()
+    {
+        // Obtener las compañías asociadas con los portafolios donde el usuario es el cobrador (debt_collector)
+        return $this->portafoliosByDebtCollector()->with('company')->get()->pluck('company')->unique();
+    }
+
     public function getLoansByPortafolio(){
         
-        // Obtener todas las compañías del usuario
-        $companies = $this->companies()->with(['portafolios.loans.payments'])->get();
+        if ($this->hasRole("Cobrador")) {
+            $companies = $this->getCompaniesAsDebtCollector();
+        } else {
+            // Obtener todas las compañías del usuario
+            $companies = $this->companies()->with(['portafolios.loans.payments'])->get();
+        }
 
         // Recopilar todos los portafolios dependiendo del rol del usuario
         $portafolios = $companies->flatMap(function($company) {
