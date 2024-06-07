@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Loans;
 use App\Models\Clients;
 use App\Models\Payments;
-use App\Models\Payment_plans;
 use App\Models\Portafolios;
 use Illuminate\Http\Request;
+use App\Models\Payment_plans;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PortafolioClientController;
 
@@ -130,7 +131,7 @@ class LoansController extends Controller
         $loan = Loans::find($id);
         $otherLoan = Loans::find($loan->flag);
         // Realizamos la consulta del prestamo referenciado para traer el valor total
-        $totalPayOtherLoan =$otherLoan->total_pay;
+        $totalPayOtherLoan = $otherLoan->total_pay;
         // Recopilamos los pago que tiene el prestamo referenciado
         $totalPaid = $otherLoan->payments()->sum('amount');
         $totalValue = $totalPayOtherLoan - $totalPaid;
@@ -173,36 +174,47 @@ class LoansController extends Controller
             return redirect()->route('pendingLoan')->with('status', 'Nel perro');
         }
 
+        $message = "Successfully approved loan";
         // Condición de validación si la campia del usuario es la misma a la que pertenece el prestamo
         if ($loan->company_id == $companie->id) {
-            // Cambia el estado del prestamo nuevo a 1
-            $loan->status = 1;
-            $loan->save();
-            // Buscamos el prestamos referenciado por la columna flag y le cambiamos el estado a 2
-            $otherLoan = Loans::find($loan->flag);
-            $otherLoan->status = 2;
-            $otherLoan->save();
-
-            $paymentPlans = Payment_plans::where('loan_id', $otherLoan->id)->get();
-            foreach ($paymentPlans as $paymentPlan) {
-                $paymentPlan->status = 2;
-                $paymentPlan->save();
-            }
-            // Realizamos la consulta del prestamo referenciado para traer el valor total
-            $totalPayOtherLoan =$otherLoan->total_pay;
-            // Recopilamos los pago que tiene el prestamo referenciado
-            $totalPaid = $otherLoan->payments()->sum('amount');
-            $totalValue = $totalPayOtherLoan - $totalPaid;
-            // Creamos una nueva instancia para registrar el valor restante que le hace al prestamo referenciado
-            $payment = new Payments();
-            $payment->loan_id = $otherLoan->id;
-            $payment->payments_id = 1;
-            $payment->user_id = Auth::user()->id;
-            $payment->amount = $totalValue;
-            $payment->payment_date = date('Y-m-d');
-            $payment->save();
+            DB::beginTransaction();
+            try {
+                // Cambia el estado del prestamo nuevo a 1
+                $loan->status = 1;
+                $loan->save();
+                // Buscamos el prestamos referenciado por la columna flag y le cambiamos el estado a 2
+                $otherLoan = Loans::find($loan->flag);
+                $otherLoan->status = 2;
+                $otherLoan->save();
     
-            return redirect()->route('pendingLoan')->with('status', 'Successfully approved loan');
+                Payment_plans::where('loan_id', $otherLoan->id)->update(['estatus' => 2]);
+                // $paymentPlans = Payment_plans::where('loan_id', $otherLoan->id)->update(['estatus' => 2]);
+                // foreach ($paymentPlans as $paymentPlan) {
+                //     $paymentPlan->status = 2;
+                //     $paymentPlan->save();
+                // }
+                // Realizamos la consulta del prestamo referenciado para traer el valor total
+                $totalPayOtherLoan =$otherLoan->total_pay;
+                // Recopilamos los pago que tiene el prestamo referenciado
+                $totalPaid = $otherLoan->payments()->sum('amount');
+                $totalValue = $totalPayOtherLoan - $totalPaid;
+                // Creamos una nueva instancia para registrar el valor restante que le hace al prestamo referenciado
+                $payment = new Payments();
+                $payment->loan_id = $otherLoan->id;
+                $payment->payments_id = 1;
+                $payment->user_id = Auth::user()->id;
+                $payment->amount = $totalValue;
+                $payment->payment_date = date('Y-m-d');
+                $payment->save();
+
+                DB::commit();
+            } catch (\Throwable $th) {
+                //throw $th;
+                DB::rollBack();
+                $message = "It was not possible to approve the loan";
+            }
+    
+            return redirect()->route('pendingLoan')->with('status', $message);
         }
 
         return redirect()->route('pendingLoan')->with('status', 'Nel perro');

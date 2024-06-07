@@ -28,7 +28,7 @@
                 <th>{{__('Quota value')}}</th>
                 <th>{{__('Total to pay')}}</th>
                 <th>{{__('Start date')}}</th>
-                <th></th>
+                <th style="width: 20%"></th>
             </tr>
         </thead>
         <tbody>
@@ -59,9 +59,9 @@
                     <th>{{$loan->quota_value}}</th>
                     <th class="text-success">{{$loan->total_pay}}</th>
                     <th>{{$loan->start_date}}</th>
-                    <th>
-                        <a href="{{route('approveLoan', Crypt::encryptString($loan->id))}}" class="btn btn-success"><i class="fas fa-thumbs-up"></i></a>
-                        <a href="{{route('deleteLoan', Crypt::encryptString($loan->id))}}" class="btn btn-danger"><i class="fas fa-thumbs-down"></i></a>
+                    <th class="text-center">
+                        <a title="Aprobar" href="{{route('approveLoan', Crypt::encryptString($loan->id))}}" class="btn btn-success"><i class="fas fa-thumbs-up"></i></a>
+                        <a title="No Aprobar" href="{{route('deleteLoan', Crypt::encryptString($loan->id))}}" class="btn btn-danger"><i class="fas fa-thumbs-down"></i></a>
                     </th>
                 </tr>
             @endforeach
