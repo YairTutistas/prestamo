@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
             $expression = str_replace(["\"", " "], "", $expression);
             @list($number, $locale, $currency) = explode(",", $expression);
             $number = $number ?? 0;
-            $locale = $locale ?? "en_US";
-            $currency = $currency ?? "USD";
+            $locale = $locale ?? "es_ES";
+            $currency = $currency ?? "COP";
 
             return 
             '<?php 

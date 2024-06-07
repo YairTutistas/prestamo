@@ -72,6 +72,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/updateLoan/{id}', [LoansController::class, 'update'])->name('updateLoan');
     Route::get('/approveLoan/{id}', [LoansController::class, 'Approve'])->name('approveLoan');
     Route::get('/pendingLoan', [LoansController::class, 'loanPending'])->name('pendingLoan');
+    Route::get('/confirm/{id}', [LoansController::class, 'confirm'])->name('confirm');
+    Route::get('/cancelConfirm/{id}', [LoansController::class, 'cancelConfirm'])->name('cancel');
     Route::get('/pendientCounter', [LoansController::class, 'loanPendientCounter'])->name('pendientCounter');
 
 

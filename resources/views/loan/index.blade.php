@@ -40,8 +40,8 @@
                     <th>{{$loan->id}}</th>
                     <th>{{$loan->portafolio->name}}</th>
                     <th><a href="{{ route("showClient", Crypt::encryptString($loan->client->id)) }}">{{$loan->client->name}}</a></th>
-                    <th>{{$loan->amount}}</th>
-                    <th>{{$loan->interest_rate}}</th>
+                    <th>@moneyformat($loan->amount)</th>
+                    <th>{{$loan->interest_rate}} %</th>
                     <th>{{$loan->deadlines}}</th>
                     @switch($loan->payment_method)
                         @case(1)
@@ -59,8 +59,8 @@
                         @default
                         <th>Null</th>
                     @endswitch
-                    <th>{{$loan->quota_value}}</th>
-                    <th class="text-success">{{$loan->total_pay}}</th>
+                    <th>@moneyformat($loan->quota_value)</th>
+                    <th class="text-success">@moneyformat($loan->total_pay)</th>
                     <th>{{$loan->start_date}}</th>
                     @can('updateLoan')
                         <th>

@@ -5,7 +5,6 @@
 @section('content_header')
     <h1>{{__('Loans')}}</h1>
 @stop
-
 @section('content')
 <div class="container">
     <div class="col-12 d-flex justify-content-end">
@@ -87,3 +86,28 @@
         });
     </script>
 @endpush
+@if(session('alerta'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loanId = "{{ session('loan_id') }}";
+        console.log(loanId); // Verificar en la consola
+
+        Swal.fire({
+            title: "{{ session('alerta')['titulo'] }}",
+            text: "{{ session('alerta')['texto'] }}",
+            icon: "{{ session('alerta')['tipo'] }}",
+            showCancelButton: true,
+            confirmButtonText: "{{ session('alerta')['confirmButtonText'] }}",
+            cancelButtonText: "{{ session('alerta')['cancelButtonText'] }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Lógica para cuando se confirma
+                window.location.href = '{{url("confirm")}}/'+ loanId; 
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // Lógica para cuando se cancela
+                window.location.href = '{{url("cancelConfirm")}}/'+ loanId;
+            }
+        });
+    });
+</script>
+@endif
