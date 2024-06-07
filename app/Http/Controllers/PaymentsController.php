@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Loans;
 use App\Models\Payments;
+use App\Models\Payment_types;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -12,23 +13,27 @@ class PaymentsController extends Controller
 {
     public function index(){
         $payments = Auth::user()->getPaymentsByPortafolio();
-        // dd($payments);
         return view('payment.index', compact('payments'));
     }
 
     public function create(){
         $user = Auth::user();
-        $loans = $user->getLoansByPortafolio();
-        return view('payment.create', compact('loans'));
+        $loans = $user->getLoansByPortafolio()->where('status', 1);
+        $paymentTypes = Payment_types::all();
+        return view('payment.create', compact('loans', 'paymentTypes'));
     }
 
     public function save(Request $request){
-        $valueLoan = Loans::select('total_pay')->where('id', $request->loan_id)->first();
+        // dd($request);
+        $loan_id = $this->decrypt($request->loan_id);
+        $paymentType_id = $this->decrypt($request->paymentType_id);
+        $valueLoan = Loans::select('total_pay')->where('id', $loan_id)->first();
         $count = Payments::where('loan_id', $request->loan_id)->sum('amount');
         $resultDiff = ($count + $request->amount) - $valueLoan->total_pay;
         if ($count + $request->amount <= $valueLoan->total_pay) {
             $payment = new Payments();
-            $payment->loan_id = $request->loan_id;
+            $payment->loan_id = $loan_id;
+            $payment->payments_id = $paymentType_id;
             $payment->amount =  $request->amount;
             $payment->user_id =  Auth::user()->id;
             $payment->payment_date = $request->payment_date;
@@ -66,8 +71,8 @@ class PaymentsController extends Controller
         // $pdf = Pdf::loadView('templates.invoice.invoice', compact("payment"));
         return Pdf::loadView('templates.invoice.invoice', compact("payment"))
             // ->setPaper('a6')
-            ->setPaper(array(0,0,337, 402.5))
+            ->setPaper(array(0,0,337, 432.5))
             ->setWarnings(false)
-            ->stream('download.pdf');
+            ->stream('factura.pdf');
     }
 }

@@ -57,7 +57,7 @@
             @endforeach
           </select>
         </div>
-        <button class="btn btn-primary form-control mt-3">{{__('Save')}}</button>
+        <button class="btn btn-primary form-control mt-3">{{__('Create')}}</button>
     </form>
 </div>
 @stop

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('loan_id');
             $table->foreign('loan_id')->references('id')->on('loans');
+            $table->unsignedBigInteger('payments_id');
+            $table->foreign('payments_id')->references('id')->on('payment_types');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->decimal('amount', $precision = 10, $scale = 2);

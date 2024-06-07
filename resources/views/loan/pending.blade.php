@@ -61,7 +61,8 @@
                     <th class="text-success">{{$loan->total_pay}}</th>
                     <th>{{$loan->start_date}}</th>
                     <th>
-                        <a href="{{route('approveLoan', Crypt::encryptString($loan->id))}}" class="btn btn-success">{{__('Approve')}}</a>
+                        <a href="{{route('approveLoan', Crypt::encryptString($loan->id))}}" class="btn btn-success"><i class="fas fa-thumbs-up"></i></a>
+                        <a href="{{route('deleteLoan', Crypt::encryptString($loan->id))}}" class="btn btn-danger"><i class="fas fa-thumbs-down"></i></a>
                     </th>
                 </tr>
             @endforeach

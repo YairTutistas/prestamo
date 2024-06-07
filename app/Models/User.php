@@ -108,8 +108,14 @@ class User extends Authenticatable
     
     public function getPaymentsByPortafolio()
     {
-        // Obtener todas las compañías del usuario
-        $companies = $this->companies()->with(['portafolios.loans.payments'])->get();
+        
+        if ($this->hasRole("Cobrador")) {
+            // Obtener todas las compañías del usuario
+            $companies = $this->getCompaniesAsDebtCollector();
+        } else {
+            // Obtener todas las compañías del usuario
+            $companies = $this->companies()->with(['portafolios.loans.payments'])->get();
+        }
 
         // Recopilar todos los portafolios dependiendo del rol del usuario
         $portafolios = $companies->flatMap(function($company) {

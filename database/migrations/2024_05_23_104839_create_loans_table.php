@@ -28,6 +28,7 @@ return new class extends Migration
             $table->decimal('total_pay', $precision = 10, $scale = 2);
             $table->integer('payment_method')->default(1)->comment('1 - Diario, 2 - Semanal, 3 - Quincenal, 4 - Mensual');
             $table->integer('status')->default(1)->comment('1 - active, 2 - inactive, 3 - pending');
+            $table->integer('flag')->default(0)->comment('Se toma el id del prestamo para renovaciones');
             $table->date('start_date');
             $table->date('end_date');
             $table->softDeletes(); // Columna deleted_at

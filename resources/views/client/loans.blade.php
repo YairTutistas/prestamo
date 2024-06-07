@@ -41,6 +41,28 @@
         </tbody>
     </table>
 </div>
+<div class="container mt-5">
+    <h3>{{__('Payment plans')}}</h3>
+    <table id="paymentPlan" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>{{__('Quota')}}</th>
+                <th>{{__('Value')}}</th>
+                <th>{{__('Payment date')}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($paymentPlans as $paymentPlan)
+                <tr>
+                    <th>{{$paymentPlan->quota}}</th>
+                    <th>@moneyformat($paymentPlan->indivudual_value)</th>
+                    <th>{{$paymentPlan->payment_date}}</th>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 @stop
 @push('styles')
     <!-- DataTables CSS -->
@@ -56,6 +78,11 @@
     <script>
     $(document).ready(function() {
         $('#clients').DataTable();
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('#paymentPlan').DataTable();
     });
     </script>
 @endpush

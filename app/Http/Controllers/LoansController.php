@@ -32,16 +32,25 @@ class LoansController extends Controller
             $user = Auth::user();
             $portafolios = $user->portafoliosByDebtCollector;
             $companys = $user->getCompaniesAsDebtCollector();
-            $clients = $user->getClientsByPortafolio();
-            return view('loan.create', compact('portafolios', 'clients','companys'));
+            $loans = $user->getLoansByPortafolio();
+            return view('cobrador.loan.create', compact('portafolios', 'loans','companys'));
         }
 
     }
 
     public function save(Request $request) {
         $data = $request->all();
-        $client_id = $this->decrypt($data['loan']['client_id']);
+        $dataClient = $data['loan']['client_id'];
+        $loan_id = 0;
+        if (strpos($dataClient, "-") !== false) {
+            $loan_id = explode("-", $dataClient);
+            if (isset($loan_id[1])) {
+                $loan_id = $loan_id[1];
+            }
+        }
+        // dd($loan_id);
         $company_id = $this->decrypt($data['loan']['company_id']);
+        $client_id = $this->decrypt($data['loan']['client_id']);
         // Sacar porcentaje
         $percentage = (preg_replace('([^A-Za-z0-9])', '', $data['loan']['amount']) * $data['loan']['interest_rate']) / 100;
         // Generar total a pagar
@@ -60,6 +69,7 @@ class LoansController extends Controller
         $loan->end_date = $data['loan']['end_date'];
         if (Auth::user()->hasRole('Cobrador')) {
             $loan->status = 3;
+            $loan->flag = $loan_id;
         }
         $loan->total_pay = $total_pay;
         $loan->save();
@@ -116,8 +126,13 @@ class LoansController extends Controller
     public function Approve($id){
         $id = $this->decrypt($id);
         $loan = Loans::find($id);
+
+        $otherLoan = Loans::find($loan->flag);
+        $totalPayOtherLoan =$otherLoan->total_pay;
+        $totalPaid = $otherLoan->payments()->sum('amount');
+        // dd($totalPaid);
+
         $loan->status = 1;
-        $loan->user_id = Auth::user()->id;
         $loan->save();
         return redirect()->route('pendingLoan')->with('status', 'Successfully approved loan');
         

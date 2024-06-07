@@ -20,16 +20,12 @@
         <thead>
             <tr>
                 <th>{{__('Name')}}</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($companies as $company)
                 <tr>
                     <th>{{$company->name}}</th>
-                    <th class="col-md-1">
-                        <a target="_blank" class="btn btn-primary mr-1" href="{{ route("generateInvoice", Crypt::encryptString($company->id)) }}"><i class="fas fa-edit"></i></a>
-                    </th>
                 </tr>
             @endforeach
         </tbody>

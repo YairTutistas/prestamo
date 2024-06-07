@@ -16,10 +16,12 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run()
     {
+        // Perfil
         Permission::create(['name' => 'profile.destroy']);
         Permission::create(['name' => 'profile.update']);
+        Permission::create(['name' => 'users']);
 
-        // Crear permisos
+        // Crear permisos clientes
         Permission::create(['name' => 'clients']);
         Permission::create(['name' => 'createClient']);
         Permission::create(['name' => 'saveClient']);
@@ -28,7 +30,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'updateClient']);
         Permission::create(['name' => 'loansClient']);
         
-        
+        // Crear permisos portafolios
         Permission::create(['name' => 'portafolios']);
         Permission::create(['name' => 'createPortafolio']);
         Permission::create(['name' => 'savePortafolio']);
@@ -36,7 +38,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'showPortafolio']);
         Permission::create(['name' => 'updatePortafolio']);
 
-
+        // Crear permisos prestamos
         Permission::create(['name' => 'loans']);
         Permission::create(['name' => 'createLoan']);
         Permission::create(['name' => 'saveLoan']);
@@ -45,12 +47,17 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'updateLoan']);
         Permission::create(['name' => 'pendingLoan']);
 
-
+        // Crear permisos pagos
         Permission::create(['name' => 'payments']);
         Permission::create(['name' => 'createPayment']);
         Permission::create(['name' => 'savePayment']);
         Permission::create(['name' => 'showPayment']);
         Permission::create(['name' => 'deletePayment']);
+
+        // Crear permisos companies
+        Permission::create(['name' => 'company']);
+        Permission::create(['name' => 'createCompany']);
+        Permission::create(['name' => 'saveCompany']);
 
         // Permissions Admin
         $permissionAdmin = [
@@ -81,11 +88,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'showPayment',
             'deletePayment',
             'pendingLoan',
+            'company',
+            'createCompany',
+            'saveCompany',
         ];
 
         $permissionCollector = [
             'payments',
-            'saveLoan'
+            'saveLoan',
+            'loans',
+            'clients'
         ];
 
         // Crear roles y asignar permisos

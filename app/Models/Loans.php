@@ -25,6 +25,7 @@ class Loans extends Model
         'interest_rate',
         'deadlines',
         'quota_value',
+        'flag',
         'start_date',
         'end_date',
     ];

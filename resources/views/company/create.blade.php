@@ -18,7 +18,7 @@
                 <label for="name">{{__('Name company')}}</label>
                 <input type="text" class="form-control" name="name" placeholder="Name company" required>
             </div>
-            <button class="btn btn-primary form-control">{{__('Save')}}</button>
+            <button class="btn btn-primary form-control">{{__('Create')}}</button>
         </form>
 
     </div>

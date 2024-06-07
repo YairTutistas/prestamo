@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('type_document');
             $table->string('document');
             $table->string('phone');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('addresses');
             $table->string('department')->nullable();
             $table->string('city')->nullable();

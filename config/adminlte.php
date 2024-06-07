@@ -320,7 +320,7 @@ return [
         [
             'text' => 'Dashboard',
             'url' => 'dashboard',
-            'icon' => 'far fa-fw fa-home',
+            'icon' => 'fas fa-fw fa-tachometer-alt',
             'label' => 4,
             'label_color' => 'success',
         ],
@@ -334,7 +334,7 @@ return [
             'text' => 'Users',
             'url' => 'users',
             'icon' => 'fas fa-fw fa-users',
-            // 'can' => 'user'
+            'can' => 'users'
         ],
         ['header' => 'labels'],
         [
@@ -342,12 +342,14 @@ return [
             'icon' => 'fas fa-fw fa-building',
             'icon_color' => 'white',
             'url' => 'company',
+            'can' => 'company'
         ],
         [
             'text' => 'Clients',
             'icon' => 'fas fa-fw fa-user',
             'icon_color' => 'white',
             'url' => 'clients',
+            'can' => 'clients'
         ],
         [
             'text' => 'Portafolios',
@@ -379,6 +381,44 @@ return [
             'label' => 0,
             'label_color' => 'warning',
             'can' => 'pendingLoan',
+        ],
+        [
+            'text' => 'Reports',
+            'icon' => 'fas fa-fw fa-flag',
+            'submenu' => [
+                [
+                    'text' => 'Clients',
+                    'url' => '#',
+                ],
+                [
+                    'text' => 'Loans',
+                    'url' => '#',
+                    'submenu' => [
+                        [
+                            'text' => 'level_two',
+                            'url' => '#',
+                        ],
+                        [
+                            'text' => 'level_two',
+                            'url' => '#',
+                            'submenu' => [
+                                [
+                                    'text' => 'level_three',
+                                    'url' => '#',
+                                ],
+                                [
+                                    'text' => 'level_three',
+                                    'url' => '#',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'Payments',
+                    'url' => '#',
+                ],
+            ],
         ],
     ],
 

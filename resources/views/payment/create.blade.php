@@ -4,7 +4,7 @@
 @section('content_header')
     <h1>{{__('Create payment')}}</h1>
 @stop
-
+{{-- @dd($paymentTypes) --}}
 @section('content')
     <div class="container">
         @if (session('status'))
@@ -18,19 +18,27 @@
                 <label for="client">{{ __('Client') }}</label>
                 <select name="loan_id" id="client" class="form-control" required>
                     @foreach ($loans as $loan)
-                        <option value="{{$loan->id}}">{{$loan->client->name ." - ". $loan->id ." (". $loan->total_pay .")"}}</option>
+                        <option value="{{Crypt::encryptString($loan->id)}}">{{$loan->client->name ." - ". $loan->id ." (". $loan->total_pay .")"}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-12 mb-3">
-                <label for="amount">{{__('amount')}}</label>
+                <label for="paymentType">{{ __('Payment types') }}</label>
+                <select name="paymentType_id" id="paymentType" class="form-control" required>
+                    @foreach ($paymentTypes as $paymentType)
+                        <option value="{{Crypt::encryptString($paymentType->id)}}">{{$paymentType->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="amount">{{__('Amount')}}</label>
                 <input type="number" class="form-control" name="amount" placeholder="$10.000" required>
             </div>
             <div class="col-md-12 mb-5">
-                <label for="paymentDate">{{__('payment_date')}}</label>
+                <label for="paymentDate">{{__('Payment date')}}</label>
                 <input type="date" class="form-control" id="paymentDate" name="payment_date" max="{{ now()->format('Y-m-d') }}" required>
             </div>
-            <button class="btn btn-primary form-control">{{__('Guardar')}}</button>
+            <button class="btn btn-primary form-control">{{__('Create')}}</button>
         </form>
 
     </div>

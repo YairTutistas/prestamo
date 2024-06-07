@@ -14,7 +14,7 @@
                 <input type="text" name="name" id="name" placeholder="Name" value="{{$portafolio->name}}" class="form-control" required>
             </div>
             <div class="col-md-12 mt-3">
-                <label for="debt_collector">{{ __('debt_collector') }}</label>
+                <label for="debt_collector">{{ __('Debt collector') }}</label>
                 <select name="debt_collector" id="debt_collector" class="form-control" required>
                     @foreach ($users as $user)
                         <option value="{{Crypt::encryptString($user->id)}}" {{ $user->id == $portafolio->debt_collector ? 'selected' : '' }}>

@@ -18,10 +18,11 @@
                 </select>
             </div>
             <div class="col-md-6 mt-3">
+                {{-- @dd($loans) --}}
                 <label for="client">{{ __('Client') }}</label>
                 <select name="loan[client_id]" id="client" class="form-control" required>
-                    @foreach ($clients as $client)
-                        <option value="{{ Crypt::encryptString($client->id) }}">{{ $client->name }}</option>
+                    @foreach ($loans as $loan)
+                        <option value="{{ Crypt::encryptString($loan->client_id)."-".$loan->id }}">{{ $loan->id ." - ". $loan->client->name ." - ". $loan->total_pay }}</option>
                     @endforeach
                 </select>
             </div>

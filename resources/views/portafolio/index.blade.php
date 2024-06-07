@@ -34,7 +34,7 @@
                     <th>{{$portafolio->getDebtCollector->name}}</th>
                     <th>{{$portafolio->company->name}}</th>
                     <th>
-                        <a href="{{route('showPortafolio', Crypt::encryptString($portafolio->id))}}" class="btn btn-primary">Edit</a>
+                        <a href="{{route('showPortafolio', Crypt::encryptString($portafolio->id))}}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                     </th>
                 </tr>
             @endforeach

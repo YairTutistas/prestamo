@@ -9,7 +9,7 @@
 @section('content')
 <div class="container">
     <div class="col-12 d-flex justify-content-end">
-        <a href="{{route('createClient')}}" class="btn btn-secondary mb-5">{{__('Crear')}}</a>
+        <a href="{{route('createClient')}}" class="btn btn-secondary mb-5">{{__('Create')}}</a>
     </div>
     @if (session('status'))
         <div class="alert alert-success">

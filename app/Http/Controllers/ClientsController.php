@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Loans;
+use App\Models\Payment_plans;
 use App\Models\Clients;
 use App\Models\Payments;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class ClientsController extends Controller
     }
 
     public  function create(){
-        $companys = Auth::user()->company;
+        $companys = Auth::user()->companies;
         return view('client.create', compact('companys'));
     }
     public  function save(Request $request){
@@ -67,7 +68,7 @@ class ClientsController extends Controller
         $payments = Loans::join('clients', 'loans.client_id', '=', 'clients.id')
         ->join('payments', 'loans.id', '=', 'payments.loan_id')
         ->where('clients.id', $client->id)
-        ->select('loans.*', 'payments.amount', 'payments.payment_date', 'payments.id as payment_id', 'loans.total_pay')
+        ->select('loans.*', 'payments.*')
         ->orderBy('loans.id')
         ->get();
 
@@ -101,7 +102,8 @@ class ClientsController extends Controller
 
     public function loans($id){
         $id = $this->decrypt($id);
-        $loansClient = Loans::where('client_id', $id)->get();
-        return view('client.loans', compact('loansClient'));
+        $loansClient = Clients::findOrFail($id)->loans;
+        $paymentPlans = Clients::findOrFail($id)->getPaymentPlans();
+        return view('client.loans', compact('loansClient', 'paymentPlans'));
     }
 }

@@ -158,7 +158,7 @@
 				</tr>
 
 				<tr class="details">
-					<td>Efectivo</td>
+					<td>{{$payment->paymentType->name}}</td>
 
 					<!-- <td>1000</td> -->
 					<td></td>

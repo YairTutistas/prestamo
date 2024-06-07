@@ -98,9 +98,9 @@
                 <thead>
                     <tr>
                         <th>{{ __('Loan #') }}</th>
-                        {{-- <th>{{ __('Payment') }}</th> --}}
-                        <th>{{ __('payment_date') }}</th>
-                        <th>{{ __('amount') }}</th>
+                        <th>{{ __('Payment date') }}</th>
+                        {{-- <th>{{ __('Payment type') }}</th> --}}
+                        <th>{{ __('Amount') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,7 +114,7 @@
                         >
                             <th>{{ $payment->id }}</th>
                             <th>{{ $payment->payment_date }}</th>
-                            {{-- <th>{{ $payment->payment_id }}</th> --}}
+                            {{-- <th>{{ $payment->paymentType->name }}</th> --}}
                             <th>{{ $payment->amount }}</th>
                         </tr>
                     @endforeach

@@ -26,14 +26,14 @@ use App\Http\Controllers\PortafoliosController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->to('dashboard');
 })->middleware(['auth', 'verified'])->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [ChartController::class, 'index'])->name('dashboard');
+
+    // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

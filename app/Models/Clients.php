@@ -28,7 +28,7 @@ class Clients extends Model
     ];
 
     public function loans(){
-        return $this->hasMany(Loans::class);
+        return $this->hasMany(Loans::class, 'client_id', 'id');
     }
 
     public function company(){
@@ -37,5 +37,17 @@ class Clients extends Model
 
     public function portafolio(){
         return $this->belongsTo(Portafolios::class);
+    }
+
+    // Funcion que obtiene todos los planes de pago asociados a los préstamos
+    public function getPaymentPlans(){
+        
+        // Obtiene todos los préstamos junto con sus planes de pago relacionados
+        $loans = $this->loans()->with('paymentPlans')->get();
+
+        // Recorre cada préstamo y extrae sus planes de pago en una sola colección
+        return $loans->flatMap(function($loan){
+            return $loan->paymentPlans;
+        });
     }
 }
