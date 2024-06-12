@@ -54,4 +54,28 @@ class Loans extends Model
     public function paymentPlans(){
         return $this->hasMany(Payment_plans::class, 'loan_id', 'id');
     }
+
+    public function getValidatePaymethod($data){
+        $paymentMethod = '';
+        switch ($data) {
+            case '1':
+                $paymentMethod = 'Diario';
+                break;
+            case '2':
+                $paymentMethod = 'Semanal';
+                break;
+            case '3':
+                $paymentMethod = 'Quincenal';
+                break;
+            case '4':
+                $paymentMethod = 'Mensual';
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        return $paymentMethod;
+    }
 }

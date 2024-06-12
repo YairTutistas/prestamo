@@ -106,4 +106,13 @@ class ClientsController extends Controller
         $paymentPlans = Clients::findOrFail($id)->getPaymentPlans();
         return view('client.loans', compact('loansClient', 'paymentPlans'));
     }
+
+    public function LoanClient($id)
+    {
+        $id = $this->decrypt($id);
+        $loans = Loans::find($id);
+        $paymentPlans = Payment_plans::where('loan_id', $id)->get();
+        return view('client.showLoanClient', compact('loans', 'paymentPlans'));
+        
+    }
 }

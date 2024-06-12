@@ -2,13 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Payments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChartController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->hasAnyRole('Admin')) {
+            $portafolios = Auth::user()->getPortafoliosByCompany();
+
+            // Datos de empresa
+            $payments = Auth::user()->getPaymentsByPortafolio();
+            $loans = Auth::user()->getLoansByPortafolio();
+                
+            $todayPaymentsCount = $payments->groupBy('payment_date')->map(function ($dayPayments) {
+                return $dayPayments->count();
+            })->toArray();
+
+            $salesData = $payments->groupBy('payment_date')->map(function ($dayPayments) {
+                return $dayPayments->sum('amount');
+            })->toArray();
+
+            $loanSuccess = $loans->groupBy(function ($loan) {
+                return $loan->created_at->toDateString(); // Obtener solo la fecha en formato 'Y-m-d'
+            })->map(function ($group) {
+                return $group->count(); // Contar los préstamos en cada grupo de fecha
+            })->toArray();
+
+
+            return view('dashboard', compact('todayPaymentsCount', 'salesData', 'loanSuccess', 'portafolios'));
+            
+        } elseif (Auth::user()->hasAnyRole('Cobrador')){
+            $user = Auth::user();
+            $portafolios = $user->portafoliosByDebtCollector;
+            
+            // Datos de empresa
+            $payments = Auth::user()->getPaymentsByPortafolio();
+            $loans = Auth::user()->getLoansByPortafolio();
+                
+            $todayPaymentsCount = $payments->groupBy('payment_date')->map(function ($dayPayments) {
+                return $dayPayments->count();
+            })->toArray();
+
+            $salesData = $payments->groupBy('payment_date')->map(function ($dayPayments) {
+                return $dayPayments->sum('amount');
+            })->toArray();
+
+            $loanSuccess = $loans->groupBy(function ($loan) {
+                return $loan->created_at->toDateString(); // Obtener solo la fecha en formato 'Y-m-d'
+            })->map(function ($group) {
+                return $group->count();
+            })->toArray();
+
+
+            return view('dashboard', compact('todayPaymentsCount', 'salesData', 'loanSuccess', 'portafolios'));
+        }
         // Datos de visitantes
         $visitorsData = [
             '18th' => 100,

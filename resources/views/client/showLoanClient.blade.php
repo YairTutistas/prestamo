@@ -21,36 +21,22 @@
                 <th>{{__('Payment method')}}</th>
                 <th>{{__('Start date')}}</th>
                 <th>{{__('End date')}}</th>
-                <th></th>
             </tr>
         </thead>
+        {{-- @dd($loans) --}}
         <tbody>
-            @foreach ($loansClient as $loanclient)
-                <tr>
-                    <th>
-                        <a href="{{route('showLoanClient',Crypt::encryptString($loanclient->id))}}">
-                            {{$loanclient->id}}
-                        </a>
-                    </th>
-                    <th>{{$loanclient->portafolio->name}}</th>
-                    <th>{{$loanclient->client->name}}</th>
-                    <th>{{$loanclient->amount}}</th>
-                    <th>{{$loanclient->interest_rate}}</th>
-                    <th>{{$loanclient->deadlines}}</th>
-                    <th>{{$loanclient->quota_value}}</th>
-                    <th>{{$loanclient->getValidatePaymethod($loanclient->payment_method)}}</th>
-                    <th>{{$loanclient->start_date}}</th>
-                    <th>{{$loanclient->end_date}}</th>
-                    <td> 
-                        @if ($loanclient->status == 2)
-                            <i title="Finished" class="fas fa-check-circle text-success"></i>
-                        
-                        @else
-                            <i title="Peding" class="fas fa-hand-holding-usd text-warning"></i>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
+            <tr>
+                <th>{{$loans->id}}</th>
+                <th>{{$loans->portafolio->name}}</th>
+                <th>{{$loans->client->name}}</th>
+                <th>{{$loans->amount}}</th>
+                <th>{{$loans->interest_rate}}</th>
+                <th>{{$loans->deadlines}}</th>
+                <th>{{$loans->quota_value}}</th>
+                <th>{{$loans->getValidatePaymethod($loans->payment_method)}}</th>
+                <th>{{$loans->start_date}}</th>
+                <th>{{$loans->end_date}}</th>
+            </tr>
         </tbody>
     </table>
 </div>

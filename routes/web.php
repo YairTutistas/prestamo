@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/showClient/{id}', [ClientsController::class, 'show'])->name('showClient');
     Route::post('/updateClient/{id}', [ClientsController::class, 'update'])->name('updateClient');
     Route::get('/loansClient/{client}', [ClientsController::class, 'loans'])->name('loansClient');
+    Route::get('/showLoanClient/{client}', [ClientsController::class, 'LoanClient'])->name('showLoanClient');
 
 
     // Portafolio

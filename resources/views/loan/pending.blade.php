@@ -90,7 +90,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const loanId = "{{ session('loan_id') }}";
-        console.log(loanId); // Verificar en la consola
 
         Swal.fire({
             title: "{{ session('alerta')['titulo'] }}",

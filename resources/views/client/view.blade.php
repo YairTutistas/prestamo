@@ -106,13 +106,13 @@
                 <tbody>
                     @foreach ($payments as $payment)
                         <tr title="{{ __('Total payment: ') . '(' . $payment->getTotalPayments() . '/' . $payment->total_pay . ')' }}"
-                            data-loan_id="{{ $payment->id }}"
+                            data-loan_id="{{ $payment->loan_id }}"
                             data-payment="{{ $payment->getTotalPayments() }}"
                             data-loan="{{ $payment->total_pay }}"
                             onmouseover="calculate_info(this)"
                             style="cursor: pointer;"
                         >
-                            <th>{{ $payment->id }}</th>
+                            <th>{{ $payment->loan_id }}</th>
                             <th>{{ $payment->payment_date }}</th>
                             {{-- <th>{{ $payment->paymentType->name }}</th> --}}
                             <th>{{ $payment->amount }}</th>
@@ -142,7 +142,6 @@
         function calculate_info(element)
         {
             let data = element.dataset;
-            console.log(data);
             document.querySelector("#info_loan_id").textContent = "Loan # " + data.loan_id;
             document.querySelector("#info_totals").textContent = `(${data.payment}/${data.loan})`;
             document.querySelector("#info_percent").style.width = (data.payment * 100) / data.loan + "%";

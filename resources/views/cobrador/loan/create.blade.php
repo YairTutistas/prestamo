@@ -175,7 +175,6 @@
                 dates_month[0] = startDate.join("-");
                 dates_month.forEach((element, index) => {
                     element = addDays(element, 0);
-                    // console.log(element)
                     element = consultHolidays(element)
                     
                     // if(SPECIAL_DATES.isHoliday(new Date(element[0], element[1], element[2]))){
