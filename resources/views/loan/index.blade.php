@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-<div class="container">
+<div class="">
     <div class="col-12 d-flex justify-content-end">
         <a href="{{route('createLoan')}}" class="btn btn-secondary mb-5">{{__('Create')}}</a>
     </div>
@@ -28,14 +28,19 @@
                 <th>{{__('Payment method')}}</th>
                 <th>{{__('Quota value')}}</th>
                 <th>{{__('Total to pay')}}</th>
-                <th>{{__('Start date')}}</th>
+                {{-- <th>{{__('Start date')}}</th> --}}
+                <th>{{__('Days in arrears')}}</th>
                 @can('updateLoan')
                     <th></th>
                 @endcan
             </tr>
         </thead>
         <tbody>
-            @foreach ($loans as $loan)
+            @foreach ($paymentPlans as $paymentPlan)
+                @php
+                    $loan = $paymentPlan->loan;
+                    $daysInArrears = $paymentPlan->daysInArrears;
+                @endphp
                 <tr>
                     <th>{{$loan->id}}</th>
                     <th>{{$loan->portafolio->name}}</th>
@@ -61,7 +66,8 @@
                     @endswitch
                     <th>@moneyformat($loan->quota_value)</th>
                     <th class="text-success">@moneyformat($loan->total_pay)</th>
-                    <th>{{$loan->start_date}}</th>
+                    {{-- <th>{{$loan->start_date}}</th> --}}
+                    <td>{{ $daysInArrears }}</td>
                     @can('updateLoan')
                         <th>
                             <div class="col">

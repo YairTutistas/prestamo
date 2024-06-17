@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loans;
+use Carbon\Carbon;
 use App\Models\Clients;
 use App\Models\Payments;
 use App\Models\Portafolios;
@@ -15,8 +16,11 @@ use App\Http\Controllers\PortafolioClientController;
 class LoansController extends Controller
 {
     public function index() {
-        $loans = Auth::user()->getLoansByCompany()->where('status', 1);
-        return view('loan.index', compact('loans'));
+        // $loans = Auth::user()->getPaymentPlanWithDaysInArrears();
+        // $loans = Auth::user()->getLoansByCompany()->where('status', 1);
+        $paymentPlans = Auth::user()->getPaymentPlanWithDaysInArrears();
+        // dd($paymentPlans);
+        return view('loan.index', compact('paymentPlans'));
     }
 
     public function create() {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Loans;
 use App\Models\Clients;
 use App\Models\Companies;
@@ -167,5 +168,46 @@ class User extends Authenticatable
         return $companies->flatMap(function($company) {
             return $company->loans;
         });
+    }
+
+    public function getPaymentPlanWithDaysInArrears()
+    {
+        // Obtener todas las compañías del usuario con los préstamos cargados
+        $companies = $this->companies()->with('loans')->get();
+
+        // Obtener la fecha actual
+        $today = now();
+
+        // Recopilar los préstamos con información de mora en los paymentPlans
+        $loansWithDaysInArrears = $companies->flatMap(function($company) use ($today) {
+            return $company->loans->map(function($loan) use ($today) {
+                // Obtener los paymentPlans del préstamo
+                $paymentPlans = $loan->paymentPlans->filter(function($plan) use ($today) {
+                    // Filtrar solo los paymentPlans donde el estado es 1 y la fecha de pago es anterior a la fecha actual
+                    return $plan->status == 1 && Carbon::parse($plan->payment_date)->lessThan($today);
+                })->map(function($plan) use ($today) {
+                    // Calcular la diferencia en días desde la fecha actual
+                    $paymentDate = \Carbon\Carbon::parse($plan->payment_date);
+                    $daysDifference = $today->diffInDays($paymentDate);
+
+                    // Añadir días de diferencia al objeto paymentPlan
+                    $plan->daysDifference = $daysDifference;
+
+                    return $plan;
+                });
+
+                // Calcular los días de mora totales para el préstamo
+                $totalDaysInArrears = $paymentPlans->sum('daysDifference');
+
+                // Crear un nuevo objeto para el préstamo con la información de mora
+                $loanWithDaysInArrears = new \stdClass();
+                $loanWithDaysInArrears->loan = $loan;
+                $loanWithDaysInArrears->daysInArrears = $totalDaysInArrears;
+
+                return $loanWithDaysInArrears;
+            });
+        });
+
+        return $loansWithDaysInArrears;
     }
 }

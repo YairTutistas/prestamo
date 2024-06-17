@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Loans;
 use App\Models\Payments;
 use App\Models\Payment_types;
+use App\Models\Payment_plans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -28,8 +29,19 @@ class PaymentsController extends Controller
         $loan_id = $this->decrypt($request->loan_id);
         $paymentType_id = $this->decrypt($request->paymentType_id);
         $valueLoan = Loans::select('total_pay')->where('id', $loan_id)->first();
+        $valueQuota = Payment_plans::select('indivudual_value')->where('loan_id', $loan_id)->first();
+        // $LastValueQuota = Payments::select('amount')->where('loan_id', $loan_id)->get()->last();
         $count = Payments::where('loan_id', $request->loan_id)->sum('amount');
         $resultDiff = ($count + $request->amount) - $valueLoan->total_pay;
+        
+        if ($request->amount < $valueQuota->indivudual_value) {
+            
+        } else {
+            $paymentPlan = Payment_plans::where('loan_id', $loan_id)->where('status', 1)->first();
+            $paymentPlan->status = 2;
+            $paymentPlan->save();
+        }
+
         if ($count + $request->amount <= $valueLoan->total_pay) {
             $payment = new Payments();
             $payment->loan_id = $loan_id;
