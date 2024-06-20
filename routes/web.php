@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\PortafoliosController;
+use App\Http\Controllers\PaymentWompiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ use App\Http\Controllers\PortafoliosController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/payment', [PaymentWompiController::class, 'showPaymentForm'])->name('payment.form');
+
 
 Route::get('/', function () {
     return redirect()->to('dashboard');

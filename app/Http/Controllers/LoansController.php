@@ -122,6 +122,7 @@ class LoansController extends Controller
         $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $loan->delete();
+        $paymentPlans = Payment_plans::where('loan_id', $id)->delete();
         return redirect()->route('loans')->with('status', 'Successfully delete loan');
     }
 

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('indivudual_value');
             $table->date('payment_date');
             $table->integer('status')->default(1)->comment('1 - activo, 2 - pagado, 3 - mora');
+            $table->softDeletes(); // Columna deleted_at
             $table->timestamps();
         });
     }
