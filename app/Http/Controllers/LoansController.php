@@ -119,6 +119,7 @@ class LoansController extends Controller
     }
 
     public function delete($id) {
+        dd('kk');
         $id = $this->decrypt($id);
         $loan = Loans::find($id);
         $loan->delete();

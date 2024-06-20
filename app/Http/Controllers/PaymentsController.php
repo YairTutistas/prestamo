@@ -106,18 +106,20 @@ class PaymentsController extends Controller
     private function updatePaymentPlanStatus($loan_id) {
         // Obtener los planes de pago pendientes
         $paymentPlans = Payment_plans::where('loan_id', $loan_id)
-            ->where('status', 1)
+            // ->where('status', 1)
             ->orderBy('id')
             ->get();
     
         // Calcular el total pagado para este préstamo
-        $totalPaid = Payments::where('loan_id', $loan_id)->get()->last();
+        // $totalPaid = Payments::where('loan_id', $loan_id)->get()->last();
+        $totalPayment = Payments::where('loan_id', $loan_id)->get()->sum('amount');
     
         foreach ($paymentPlans as $paymentPlan) {
-            if ($totalPaid->amount >= $paymentPlan->indivudual_value) {
+            // if ($totalPaid->amount >= $paymentPlan->indivudual_value) {
+            if ($totalPayment >= $paymentPlan->indivudual_value) {
                 $paymentPlan->status = 2; // Actualizar el estado del plan de pago
                 $paymentPlan->save();
-                $totalPaid->amount -= $paymentPlan->indivudual_value;
+                $totalPayment -= $paymentPlan->indivudual_value;
             } else {
                 break; // Si no se cumple el valor del plan de pago, salir del bucle
             }
@@ -152,6 +154,10 @@ class PaymentsController extends Controller
                     $paymentPlan->status = 1;
                     $paymentPlan->save();
                     $payment->amount -= $paymentPlan->indivudual_value;
+                }else if($payment->amount > 0){
+                    $paymentPlan->status = 1;
+                    $paymentPlan->save();
+                    break;
                 }
             }
         }

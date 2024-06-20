@@ -47,6 +47,7 @@
             <tr>
                 <th>{{__('Quota')}}</th>
                 <th>{{__('Value')}}</th>
+                <th>{{__('Status')}}</th>
                 <th>{{__('Payment date')}}</th>
             </tr>
         </thead>
@@ -55,6 +56,7 @@
                 <tr>
                     <th>{{$paymentPlan->quota}}</th>
                     <th>@moneyformat($paymentPlan->indivudual_value)</th>
+                    <th>{{ ($paymentPlan->status == 1) ? 'Pending' : 'Paid' }}</th>
                     <th>{{$paymentPlan->payment_date}}</th>
                 </tr>
             @endforeach

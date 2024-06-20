@@ -39,7 +39,7 @@
             @foreach ($paymentPlans as $paymentPlan)
                 @php
                     $loan = $paymentPlan->loan;
-                    $daysInArrears = $paymentPlan->daysInArrears;
+                    $daysInArrears = $paymentPlan->daysInArrears ?? 0;
                 @endphp
                 <tr>
                     <th>{{$loan->id}}</th>
@@ -70,17 +70,17 @@
                     <td>{{ $daysInArrears }}</td>
                     @can('updateLoan')
                         <th>
-                            <div class="col">
-                                <a href="{{route('showLoan', Crypt::encryptString($loan->id))}}" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
+                            <div class="row">
                                 <form action="{{ route('deleteLoan', Crypt::encryptString($loan->id)) }}" method="POST" id="delete-form-{{ $loan->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-danger btn-delete" data-id="{{ $loan->id }}">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
                                 </form>
+                                <button type="button" class="btn btn-danger btn-delete mr-1" data-id="{{ $loan->id }}" form="delete-form-{{ $loan->id }}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <a href="{{route('showLoan', Crypt::encryptString($loan->id))}}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                             </div>
                         </th>
                     @endcan

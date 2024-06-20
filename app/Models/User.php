@@ -176,7 +176,7 @@ class User extends Authenticatable
         $companies = $this->companies()->with('loans')->get();
 
         // Obtener la fecha actual
-        $today = now();
+        $today = Carbon::parse(date('Y-m-d'));
 
         // Recopilar los préstamos con información de mora en los paymentPlans
         $loansWithDaysInArrears = $companies->flatMap(function($company) use ($today) {
@@ -197,7 +197,7 @@ class User extends Authenticatable
                 });
 
                 // Calcular los días de mora totales para el préstamo
-                $totalDaysInArrears = $paymentPlans->sum('daysDifference');
+                $totalDaysInArrears = (int) $paymentPlans->max('daysDifference');
 
                 // Crear un nuevo objeto para el préstamo con la información de mora
                 $loanWithDaysInArrears = new \stdClass();

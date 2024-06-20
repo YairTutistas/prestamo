@@ -68,7 +68,13 @@ class ClientsController extends Controller
         $payments = Loans::join('clients', 'loans.client_id', '=', 'clients.id')
         ->join('payments', 'loans.id', '=', 'payments.loan_id')
         ->where('clients.id', $client->id)
-        ->select('loans.*', 'payments.*')
+        ->where('payments.deleted_at', null)
+        ->select(
+            'loans.*',
+            'payments.loan_id',
+            'payments.payment_date',
+            'payments.amount',
+        )
         ->orderBy('loans.id')
         ->get();
 
